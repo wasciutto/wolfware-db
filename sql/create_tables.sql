@@ -9,3 +9,8 @@ CREATE TABLE Staff (
     emailAddress VARCHAR(64),
     timeOfEmployment TIMESTAMP
 )
+
+CREATE TABLE Supply (
+	supplierID CHAR(64),
+	transactionID CHAR(64)
+)
