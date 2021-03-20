@@ -63,7 +63,7 @@ Connection connection = null;
       statement.executeUpdate("INSERT INTO SIGNSUPCANCELS VALUES ('STF1116', 'CUST000006', '2021-03-15','cancel')");
       
             // Create the SUPPLIERS table
-            statement.executeUpdate("CREATE TABLE SUPPLIERS (SUPPLIERID CHAR(7), SUPPLIERNAME CHAR(150), EMAILADDRESS VARCHAR(250), PHONE VARCHAR(15), LOCATION  VARCHAR(1000), PRIMARY KEY(SUPPLIERID))");
+            statement.executeUpdate("CREATE TABLE SUPPLIERS (SUPPLIERID CHAR(7), SUPPLIERNAME CHAR(150) NOT NULL, EMAILADDRESS VARCHAR(250) NOT NULL, PHONE VARCHAR(15) NOT NULL, LOCATION  VARCHAR(1000) NOT NULL, PRIMARY KEY(SUPPLIERID))");
             
             // Populate the SUPPLIERS table
             statement.executeUpdate("INSERT INTO SUPPLIERS VALUES ('SUP0001','Fresh Farm Eggs','freshfarmeggs@one.com','7778890000','Tootsy NC 27556')");
