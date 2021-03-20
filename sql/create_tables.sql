@@ -1,8 +1,8 @@
 -- General Tables
 
 CREATE TABLE STAFF (
-    STAFFID CHAR(10),
-    STOREID CHAR(10),
+    STAFFID CHAR(7),
+    STOREID CHAR(7),
     NAME VARCHAR(128),
     AGE INTEGER,
     HOMEADDRESS VARCHAR(128),
@@ -11,6 +11,13 @@ CREATE TABLE STAFF (
     EMAILADDRESS VARCHAR(64),
     TIMEOFEMPLOYMENT TIMESTAMP
 );
+
+INSERT INTO STAFF VALUES ('STF0001', 'STR0001', 'Luke Skywalker', 24, '100 Desert Ln', 'Warehouse Operator', '9191112222', 'lskywalker@hotmail.com', '2020-09-01T10:19:24');
+INSERT INTO STAFF VALUES ('STF0002', 'STR0001', 'Princess Leia', 24, '24 Alderaan Palace', 'Registration Office Operator', '9191112222', 'leiap@hotmail.com', '2015-10-01T10:19:24');
+INSERT INTO STAFF VALUES ('STF0003', 'STR0002', 'Han Solo', 31, '783 Millenium Dr', 'Cashier', '9192223333', 'fylingsolo@hotmail.com', '2017-09-04T10:19:24');
+INSERT INTO STAFF VALUES ('STF0004', 'STR0002', 'Chewbacca', 64, '783 Millenium Dr', 'Billing Staff', '9193334444', 'walkingcarpet@hotmail.com', '2013-09-01T10:19:24');
+INSERT INTO STAFF VALUES ('STF0005', 'STR0003', 'Obi Wan Kenobi', 73, '105 Desert Ln', 'Administrator', '9194445555', 'uncleben@hotmail.com', '2012-09-01T10:19:24');
+
 
 CREATE TABLE STORE(
 	STOREID CHAR(7), 
