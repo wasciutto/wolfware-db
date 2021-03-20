@@ -1,6 +1,6 @@
 // This example is created by Seokyong Hong
 // modified by Shrikanth N C to support MySQL(MariaDB)
-
+// modified by Pankaj
 // Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
 
 import java.sql.*;
