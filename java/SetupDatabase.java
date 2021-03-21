@@ -6,7 +6,7 @@
 
 import java.sql.*;
 
-public class v1 {
+public class SetupDatabase {
 	// Update your user info alone here
 	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; // Using SERVICE_NAME
 
