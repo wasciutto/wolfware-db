@@ -21,6 +21,7 @@ public class SetupDatabase {
 			// DriverManager list that recognizes the URL jdbcURL
 			connection = DriverManager.getConnection(jdbcURL, user, password);
 
+      clearDatabase(connection);
 			createTables(connection);			
 			
 		} catch(Throwable oops) {
@@ -265,6 +266,42 @@ public class SetupDatabase {
 		}
 		
 	}
+ 
+  private static void clearDatabase(Connection connection) {
+    String[] tableNames = new String[] {
+		"HASSUPPLIERS",
+		"SUPPLY",
+		"SUPPLIERS",
+		"MAINTAINS",
+		"STOCKS",
+		"CLUBMEMBERS",
+		"SIGNSUPCANCELS",
+		"TRANSACTIONITEMS",
+		"PERFORMSTRANSACTIONS",
+		"SUPPLIEDPRODUCTS",
+		"PRODUCTINVENTORY",
+		"TRANSACTIONS",
+		"MANAGESSUPPLIERBILLS",
+		"MANAGESCUSTOMERREWARDS",
+		"CUSTOMERREWARDS",
+		"SUPPLIERBILLS",
+		"STAFF",
+		"STORE"
+	};
+	
+	for(String tableName : tableNames) {
+		Statement statement = null;
+		try {
+		  statement = connection.createStatement();
+		  statement.executeUpdate(String.format("DROP TABLE %s;", tableName));
+		} catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println(String.format("%s did not exist to delete.", tableName));
+		} finally {
+			close(statement);
+		}
+	}
+  }
 	
 	static void close(Connection connection) {
 		if(connection != null) {
