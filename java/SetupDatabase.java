@@ -1,11 +1,8 @@
-  
-// This example is created by Seokyong Hong
-// modified by Shrikanth N C to support MySQL(MariaDB)
-// modified by Pankaj
-// Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
-
 import java.sql.*;
 
+/**
+	Setups up the Wolfware Warehouse Database and populates with sample data.
+*/
 public class SetupDatabase {
 	// Update your user info alone here
 	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; // Using SERVICE_NAME
@@ -273,17 +270,17 @@ public class SetupDatabase {
 	
 	static void close(Connection connection) {
 		if(connection != null) {
-				try {
-				connection.close();
-				} catch(Throwable whatever) {}
-			}
+			try {
+			connection.close();
+			} catch(Throwable whatever) {}
 		}
-		static void close(Statement statement) {
-			if(statement != null) {
-				try {
-				statement.close();
-				} catch(Throwable whatever) {}
-			}
+	}
+	
+	static void close(Statement statement) {
+		if(statement != null) {
+			try {
+			statement.close();
+			} catch(Throwable whatever) {}
 		}
 	}
 }
