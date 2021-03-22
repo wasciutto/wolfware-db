@@ -269,24 +269,32 @@ public class SetupDatabase {
  
   private static void clearDatabase(Connection connection) {
     String[] tableNames = new String[] {
-		"HASSUPPLIERS",
-		"SUPPLY",
-		"SUPPLIERS",
+		"PERFORMSTRANSACTIONS",
+		"TRANSACTIONITEMS",
+		"TRANSACTIONS",
+		
+		"SIGNSUPCANCELS",
+		"MANAGESCUSTOMERREWARDS",
+		"CLUBMEMBERS",
+		"CUSTOMERREWARDS",
+		
+		"SUPPLIERBILLS",
+		"MANAGESSUPPLIERBILLS",
+		
 		"MAINTAINS",
 		"STOCKS",
-		"CLUBMEMBERS",
-		"SIGNSUPCANCELS",
-		"TRANSACTIONITEMS",
-		"PERFORMSTRANSACTIONS",
-		"SUPPLIEDPRODUCTS",
+		
+		"HASPRODUCTINVENTORY",
 		"PRODUCTINVENTORY",
-		"TRANSACTIONS",
-		"MANAGESSUPPLIERBILLS",
-		"MANAGESCUSTOMERREWARDS",
-		"CUSTOMERREWARDS",
-		"SUPPLIERBILLS",
-		"STAFF",
-		"STORE"
+		
+		"SUPPLY",
+		"SUPPLIEDPRODUCTS",
+		"HASSUPPLIERS",
+		"SUPPLIERS",
+		
+		"WORKSIN",
+		"STORE",
+		"STAFF"
 	};
 	
 	for(String tableName : tableNames) {
@@ -295,7 +303,7 @@ public class SetupDatabase {
 		  statement = connection.createStatement();
 		  statement.executeUpdate(String.format("DROP TABLE %s;", tableName));
 		} catch(SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println(String.format("%s did not exist to delete.", tableName));
 		} finally {
 			close(statement);
