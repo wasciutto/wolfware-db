@@ -79,17 +79,18 @@ Class.forName("org.mariadb.jdbc.Driver");
 			
 			try{
   			  result = statement.executeQuery(sqlSelect);
-          System.out.println("************************");
-          System.out.println("STOREID\t|\tMONTH\t|\tTOTALSALES");
+          System.out.println("*************************************************");
+          System.out.println("| STOREID\t|\tMONTH\t|\tTOTALSALES\t\t |");
+          System.out.println("*************************************************");
           while (result.next()) {
               String STOREID = result.getString("STOREID");
               String MONTH = result.getString("MONTH");
             
               float TOTALSALES = result.getFloat("TOTALSALES");
               
-              System.out.println(STOREID + "\t|\t" + MONTH+ "\t|\t" + TOTALSALES);
+              System.out.println("| "+STOREID + "\t|\t" + MONTH+ "\t|\t" + TOTALSALES+" |");
           }
-          System.out.println("************************");
+          System.out.println("*************************************************");
         }
         catch (Exception e){
         System.out.println("No results");
