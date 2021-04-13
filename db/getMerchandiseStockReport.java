@@ -5,9 +5,8 @@
 
 import java.sql.*;
 import java.util.Scanner;
-import java.util.InputMismatchException;
 
-public class getSalesGrowth {
+public class getMerchandiseStockReport {
 
 
 // Update your user info alone here
@@ -42,63 +41,35 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter store ID (Please enter ID in quotes): "); 
+            System.out.print("Enter store ID (Please enter ID in quotes): "); 
       			storeID = sc.nextLine();
       			
-      			System.out.print("Enter Start Date (in MMDDYYYY format): ");
-      			String startDate = sc.nextLine();
-      			String startMonth = startDate.substring(0,2);
-				String startYear = startDate.substring(4,8);
-				
-				System.out.print("Enter End Date (in MMDDYYYY format): ");
-      			String endDate = sc.nextLine();
-				String endMonth = endDate.substring(0,2);
-				String endYear = endDate.substring(4,8);
-				
-								
-				System.out.print("Compare By (Month,Year?): ");
-      			String compareBy = sc.nextLine();	
+      			            
+            String sql = "SELECT B.STOREID, A.PRODUCTID, A.QUANTITYINSTOCK FROM PRODUCTINVENTORY A JOIN HASPRODUCTINVENTORY B ON A.PRODUCTID = B.PRODUCTID AND A.BATCHID = B.BATCHID WHERE B.STOREID = %s";
 			
-			if (compareBy.equals("Month")){
-            
-            String sql = "SELECT D.STOREID, MONTH(B.PURCHASEDATE) AS MONTH,SUM(B.TOTALPRICE) AS TOTALSALES FROM TRANSACTIONS B JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND MONTH(B.PURCHASEDATE) >= %d AND MONTH(B.PURCHASEDATE)<= %d GROUP BY MONTH";
-			sqlSelect = String.format(sql, storeID, Integer.valueOf(startMonth),Integer.valueOf(endMonth));
-			}
-			else {
-      
-				String sql = "SELECT D.STOREID, YEAR(B.PURCHASEDATE) AS YEAR,SUM(B.TOTALPRICE) AS TOTALSALES FROM TRANSACTIONS B JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND YEAR(B.PURCHASEDATE) >= %d AND YEAR(B.PURCHASEDATE)<= %d GROUP BY YEAR";
-				sqlSelect = String.format(sql, storeID, Integer.valueOf(startYear),Integer.valueOf(endYear));
-        
-			}
-			
-			
+			sqlSelect = String.format(sql, storeID);
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id or year.");
+              System.out.print("Incorrect format for Store Id");
             }
 			
-			try{
-  			  result = statement.executeQuery(sqlSelect);
-          System.out.println("*************************************************");
-          System.out.println("| STOREID\t|\tMONTH\t|\tTOTALSALES\t\t |");
-          System.out.println("*************************************************");
-          while (result.next()) {
-              String STOREID = result.getString("STOREID");
-              String MONTH = result.getString("MONTH");
+			
+			result = statement.executeQuery(sqlSelect);
+			System.out.println("***************************************************************");
+			System.out.println("| STOREID\t|\tPRODUCTID\t|\tQUANTITYINSTOCK |");
+			System.out.println("***************************************************************");
+        while (result.next()) {
+            String STOREID = result.getString("STOREID");
+            String PRODUCTID = result.getString("PRODUCTID");
+            float QUANTITYINSTOCK = result.getFloat("QUANTITYINSTOCK");
             
-              float TOTALSALES = result.getFloat("TOTALSALES");
-              
-              System.out.println("| "+STOREID + "\t|\t" + MONTH+ "\t|\t" + TOTALSALES+" |");
-          }
-          System.out.println("*************************************************");
+            
+            System.out.println("| "+STOREID + "\t|\t" + PRODUCTID+ "\t\t|\t" + QUANTITYINSTOCK + "\t |");
         }
-        catch (Exception e){
-        System.out.println("No results");
-        
-        }
-			//Insert the patient into the specified ward
+			System.out.println("***************************************************************");
+			
 			if(!statement.execute(sqlSelect)) {
-			System.out.println("Incorrect storeID or Year");
+			System.out.println("Incorrect storeID");
 			//DBManager.rollbackTransaction();
 			return;
 			}
