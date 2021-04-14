@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
-public class getCustomerGrowth {
+public class getCustomerPurchaseHistory {
 
 
 // Update your user info alone here
@@ -30,6 +30,8 @@ Class.forName("org.mariadb.jdbc.Driver");
             Statement statement = null;
             ResultSet result = null;
             String storeID = null;
+            String customerID = null;
+            
             int year = 2020;
             String sqlSelect = null;
             String compareBy = null;
@@ -60,9 +62,9 @@ Class.forName("org.mariadb.jdbc.Driver");
 				String endYear = endDate.substring(0,4);
 				
 			String sql = "SELECT C.STOREID, A.CUSTOMERID, B.PRODUCTID, A.PURCHASEDATE, B.QUANTITYSOLD FROM TRANSACTIONS A, TRANSACTIONITEMS B,STAFF C WHERE A.TRANSACTIONID = B.TRANSACTIONID AND A.STAFFID = C.STAFFID AND A.CUSTOMERID = %s AND A.PURCHASEDATE >=%s AND A.PURCHASEDATE <=%s AND C.STOREID = %s GROUP BY B.PRODUCTID, A.PURCHASEDATE";
-			sqlSelect = String.format(sql, customerID,startDate,endDate,storeID);	
+			sqlSelect = String.format(sql, "'"+customerID+"'","'"+startDate+"'","'"+endDate+"'","'"+storeID+"'");	
 			
-				
+			System.out.println(sqlSelect);	
 			
             }
             catch(Throwable oops) {
@@ -71,39 +73,30 @@ Class.forName("org.mariadb.jdbc.Driver");
 			
 			try{
   			  result = statement.executeQuery(sqlSelect);
-          System.out.println("*************************************************");
-		  if (compareBy.equals("Month")){
-          System.out.println("| STOREID\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
-		  }
-		  else {
-			  System.out.println("| STOREID\t|\tYEAR\t|\tTOTALSIGNUPS\t |");
-		  }
-          System.out.println("*************************************************");
+          System.out.println("***************************************************************************************");
+		  
+          System.out.println("| STOREID\t|\tCUSTOMERID\t|\tPRODUCTID\t|\tPURCHASEDATE\t|\tQUANTITYSOLD\t |");
+		  
+		  
+          System.out.println("***************************************************************************************");
           while (result.next()) {
               String STOREID = result.getString("STOREID");
-			  int TOTALSIGNUPS = result.getInt("TOTALSIGNUPS");
-			  if (compareBy.equals("Month")){
-              String MONTH = result.getString("MONTH");
-			  System.out.println("| "+STOREID + "\t|\t" + MONTH+ "\t|\t" + TOTALSIGNUPS+" |");
+              String CUSTOMERID = result.getString("CUSTOMERID");
+              String PRODUCTID = result.getString("PRODUCTID");
+              String PURCHASEDATE = result.getString("PURCHASEDATE");
+			        int QUANTITYSOLD = result.getInt("QUANTITYSOLD");
+			  
+			        System.out.println("| "+STOREID + "\t|\t" + CUSTOMERID+ "\t|\t" + PRODUCTID+ "\t|\t" + PURCHASEDATE+ "\t|\t" + QUANTITYSOLD +" |");
 			  }
-			  else {
-				  String YEAR = result.getString("MONTH");
-				  System.out.println("| "+STOREID + "\t|\t" + YEAR+ "\t|\t" + TOTALSIGNUPS+" |");
-			  }
-              
-              
-              
-          }
-          System.out.println("*************************************************");
+          System.out.println("***************************************************************************************");
         }
         catch (Exception e){
         System.out.println("No results");
         
         }
-			//Insert the patient into the specified ward
+			
 			if(!statement.execute(sqlSelect)) {
-			System.out.println("Incorrect storeID or Year");
-			//DBManager.rollbackTransaction();
+			System.out.println("Incorrect storeID");
 			return;
 			}
 								
