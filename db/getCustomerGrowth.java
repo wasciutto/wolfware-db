@@ -1,7 +1,3 @@
-// This example is created by Seokyong Hong
-// modified by Shrikanth N C to support MySQL(MariaDB)
-
-// Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
 
 import java.sql.*;
 import java.util.Scanner;
@@ -10,10 +6,9 @@ import java.util.InputMismatchException;
 public class getCustomerGrowth {
 
 
-// Update your user info alone here
-private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; // Using SERVICE_NAME
 
-// Update your user and password info here!
+private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; 
+
 
 private static final String user = "pattri";
 private static final String password = "200226336";
@@ -35,84 +30,75 @@ Class.forName("org.mariadb.jdbc.Driver");
             String compareBy = null;
 			      Scanner sc= new Scanner(System.in);
             try {
-            // Get a connection instance from the first driver in the
-            // DriverManager list that recognizes the URL jdbcURL
+            
             connection = DriverManager.getConnection(jdbcURL, user, password);
             statement = connection.createStatement();
-            // Create a statement instance that will be sending
-            // your SQL statements to the DBMS
+            
             
       			try{
-				System.out.print("Enter store ID (Please enter ID in quotes): "); 
-      			storeID = sc.nextLine();
-      			
-      			System.out.print("Enter Start Date (in MMDDYYYY format): ");
-      			String startDate = sc.nextLine();
-      			String startMonth = startDate.substring(0,2);
-				String startYear = startDate.substring(4,8);
-				
-				System.out.print("Enter End Date (in MMDDYYYY format): ");
-      			String endDate = sc.nextLine();
-				String endMonth = endDate.substring(0,2);
-				String endYear = endDate.substring(4,8);
-				
-								
-				System.out.print("Compare By (Month,Year?): ");
-      			compareBy = sc.nextLine();	
+  				    System.out.print("Enter store ID:"); 
+        			storeID = sc.nextLine();
+        			
+        			System.out.print("Enter Start Date (in YYYY-MM-DD format): ");
+        			String startDate = sc.nextLine();
+        			String startMonth = startDate.substring(5,7);
+  				    String startYear = startDate.substring(0,4);
+  				
+  				    System.out.print("Enter End Date (in YYYY-MM-DD format): ");
+        			String endDate = sc.nextLine();
+  				    String endMonth = endDate.substring(5,7);
+  				    String endYear = endDate.substring(0,4);
+  				
+  								
+  				    System.out.print("Compare By (Month,Year?): ");
+        			compareBy = sc.nextLine();	
 			
-			if (compareBy.equals("Month")){
+			        if (compareBy.equals("Month")){
             
-            String sql = "SELECT D.STOREID, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'ACTIVE' AND MONTH(B.ACTIONDATE) >= %d AND MONTH(B.ACTIONDATE)<= %d GROUP BY MONTH";
-			sqlSelect = String.format(sql, storeID, Integer.valueOf(startMonth),Integer.valueOf(endMonth));
-			}
-			else {
+                  String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'ACTIVE' AND B.ACTIONDATE >= %s AND B.ACTIONDATE<= %s GROUP BY YEAR,MONTH";
+			            sqlSelect = String.format(sql, "'"+storeID+"'", "'"+startDate+"'","'"+endDate+"'");
+			          }
+			      else {
       
-				String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'ACTIVE' AND YEAR(B.ACTIONDATE) >= %d AND YEAR(B.ACTIONDATE)<= %d GROUP BY YEAR";
-				sqlSelect = String.format(sql, storeID, Integer.valueOf(startYear),Integer.valueOf(endYear));
+				        String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'ACTIVE' AND B.ACTIONDATE >= %s AND B.ACTIONDATE<= %s GROUP BY YEAR";
+				        sqlSelect = String.format(sql, "'"+storeID+"'", "'"+startDate+"'","'"+endDate+"'");
         
-			}
+			        }
 			
 			
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id or year.");
+              System.out.print("Incorrect format for Store Id or date.");
             }
 			
 			try{
   			  result = statement.executeQuery(sqlSelect);
-          System.out.println("*************************************************");
+          System.out.println("**************************************************************************");
 		  if (compareBy.equals("Month")){
-          System.out.println("| STOREID\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
+          System.out.println("| STOREID\t|\tYEAR\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
 		  }
 		  else {
-			  System.out.println("| STOREID\t|\tYEAR\t|\tTOTALSIGNUPS\t |");
+			  System.out.println("| STOREID\t|\tYEAR\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
 		  }
-          System.out.println("*************************************************");
+          System.out.println("**************************************************************************");
           while (result.next()) {
               String STOREID = result.getString("STOREID");
-			  int TOTALSIGNUPS = result.getInt("TOTALSIGNUPS");
-			  if (compareBy.equals("Month")){
+			        int TOTALSIGNUPS = result.getInt("TOTALSIGNUPS");
+			  
               String MONTH = result.getString("MONTH");
-			  System.out.println("| "+STOREID + "\t|\t" + MONTH+ "\t|\t" + TOTALSIGNUPS+" |");
-			  }
-			  else {
-				  String YEAR = result.getString("MONTH");
-				  System.out.println("| "+STOREID + "\t|\t" + YEAR+ "\t|\t" + TOTALSIGNUPS+" |");
-			  }
-              
-              
-              
-          }
-          System.out.println("*************************************************");
+  			      String YEAR = result.getString("YEAR");
+              System.out.println("| "+STOREID + "\t|\t" + YEAR + "\t|\t" + MONTH + "\t|\t" + TOTALSIGNUPS+"\t\t |");
+				  }
+          System.out.println("**************************************************************************");
         }
         catch (Exception e){
         System.out.println("No results");
         
         }
-			//Insert the patient into the specified ward
+			
 			if(!statement.execute(sqlSelect)) {
 			System.out.println("Incorrect storeID or Year");
-			//DBManager.rollbackTransaction();
+			
 			return;
 			}
 								
