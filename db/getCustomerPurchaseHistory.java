@@ -1,8 +1,3 @@
-// This example is created by Seokyong Hong
-// modified by Shrikanth N C to support MySQL(MariaDB)
-
-// Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
-
 import java.sql.*;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -41,14 +36,14 @@ Class.forName("org.mariadb.jdbc.Driver");
             // DriverManager list that recognizes the URL jdbcURL
             connection = DriverManager.getConnection(jdbcURL, user, password);
             statement = connection.createStatement();
-            // Create a statement instance that will be sending
-            // your SQL statements to the DBMS
+            // Create a statement instance that will be send
+            // SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter store ID (Please enter ID in quotes): "); 
+				System.out.print("Enter store ID: "); 
       			storeID = sc.nextLine();
 				
-				System.out.print("Enter customer ID (Please enter ID in quotes): "); 
+				System.out.print("Enter customer ID: "); 
       			customerID = sc.nextLine();
       			
       			System.out.print("Enter Start Date (in YYYY-MM-DD format in quotes): ");
@@ -64,7 +59,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			String sql = "SELECT C.STOREID, A.CUSTOMERID, B.PRODUCTID, A.PURCHASEDATE, B.QUANTITYSOLD FROM TRANSACTIONS A, TRANSACTIONITEMS B,STAFF C WHERE A.TRANSACTIONID = B.TRANSACTIONID AND A.STAFFID = C.STAFFID AND A.CUSTOMERID = %s AND A.PURCHASEDATE >=%s AND A.PURCHASEDATE <=%s AND C.STOREID = %s GROUP BY B.PRODUCTID, A.PURCHASEDATE";
 			sqlSelect = String.format(sql, "'"+customerID+"'","'"+startDate+"'","'"+endDate+"'","'"+storeID+"'");	
 			
-			System.out.println(sqlSelect);	
+			
 			
             }
             catch(Throwable oops) {
@@ -73,12 +68,12 @@ Class.forName("org.mariadb.jdbc.Driver");
 			
 			try{
   			  result = statement.executeQuery(sqlSelect);
-          System.out.println("***************************************************************************************");
+          System.out.println("******************************************************************************************************************");
 		  
           System.out.println("| STOREID\t|\tCUSTOMERID\t|\tPRODUCTID\t|\tPURCHASEDATE\t|\tQUANTITYSOLD\t |");
 		  
 		  
-          System.out.println("***************************************************************************************");
+          System.out.println("******************************************************************************************************************");
           while (result.next()) {
               String STOREID = result.getString("STOREID");
               String CUSTOMERID = result.getString("CUSTOMERID");
@@ -86,9 +81,9 @@ Class.forName("org.mariadb.jdbc.Driver");
               String PURCHASEDATE = result.getString("PURCHASEDATE");
 			        int QUANTITYSOLD = result.getInt("QUANTITYSOLD");
 			  
-			        System.out.println("| "+STOREID + "\t|\t" + CUSTOMERID+ "\t|\t" + PRODUCTID+ "\t|\t" + PURCHASEDATE+ "\t|\t" + QUANTITYSOLD +" |");
+			        System.out.println("| "+STOREID + "\t|\t" + CUSTOMERID+ "\t|\t" + PRODUCTID + "\t\t|\t" + PURCHASEDATE+ "\t|\t" + QUANTITYSOLD +"\t\t |");
 			  }
-          System.out.println("***************************************************************************************");
+          System.out.println("******************************************************************************************************************");
         }
         catch (Exception e){
         System.out.println("No results");
