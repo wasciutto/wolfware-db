@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class updateStoreInfo {
+public class enterDiscountInfo {
 
 
 // Update your user info alone here
@@ -29,8 +29,10 @@ Class.forName("org.mariadb.jdbc.Driver");
             Connection connection = null;
             Statement statement = null;
 			
-			String storeID = null;
+            
+			String discountID = null;
             String sqlSelect = null;
+			String sqlSelect1 = null;
 			      Scanner sc= new Scanner(System.in);
             try {
             // Get a connection instance from the first driver in the
@@ -41,16 +43,31 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter store ID which you want to update(Please enter ID in quotes): "); 
-      			storeID = sc.nextLine();
+				System.out.print("Enter discount ID (Please enter ID in quotes): "); 
+      			discountID = sc.nextLine();
 				
+				System.out.print("Enter discount type in quotes): "); 
+      			String dType = sc.nextLine();
 				
-			
-				System.out.print("Enter updated phone number in quotes");
-				String phoneNumber= sc.nextLine();
+				System.out.print("Enter discount value in quotes): "); 
+      			String dValue = sc.nextLine();
 				
-      			String sql= "UPDATE STORE SET PHONENUMBER= %s WHERE STOREID=%s ";
-				sqlSelect = String.format(sql, , phoneNumber, storeID);
+				System.out.print("Enter Start Date (in YYYY-MM-DD format in quotes): ");
+      			String startDate = sc.nextLine();
+				
+				System.out.print("Enter End Date (in YYYY-MM-DD format in quotes): ");
+      			String endDate = sc.nextLine();
+				
+				System.out.print("Enter product ID (Please enter ID in quotes): "); 
+      			String productID = sc.nextLine();
+      			
+				System.out.print("Enter batch ID (Please enter ID in quotes): "); 
+      			String batchID = sc.nextLine();
+				
+      			String sql= "INSERT INTO STORE VALUES (%s,%s,%s,%s,%s)";
+				sqlSelect = String.format(sql, discountID, dType, dValue, startDate, endDate);
+				String sql1= "INSERT INTO HASDISCOUNT VALUES (%s,%s,%s)";
+				sqlSelect1 = String.format(sql1, discountID, productID, batchID);
 			
 			
             }
@@ -61,6 +78,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			try{
 			connection.setAutoCommit(false);
   			statement.executeQuery(sqlSelect);
+			statement.executeQuery(sqlSelect1);
 			connection.commit();
 			System.out.println("Statement Executed");
           }

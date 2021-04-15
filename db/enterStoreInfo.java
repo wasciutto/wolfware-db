@@ -28,8 +28,6 @@ Class.forName("org.mariadb.jdbc.Driver");
 
             Connection connection = null;
             Statement statement = null;
-			ResultSet result = null;
-            
 			String storeID = null;
             String sqlSelect = null;
 			      Scanner sc= new Scanner(System.in);
@@ -65,7 +63,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			
 			try{
 			connection.setAutoCommit(false);
-  			result = statement.executeQuery(sqlSelect);
+  			statement.executeQuery(sqlSelect);
 			connection.commit();
 			System.out.println("Statement Executed");
           }
