@@ -43,13 +43,13 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter discount ID to delete(Please enter ID in quotes): "); 
+				System.out.print("Enter discount ID to delete: "); 
       			discountID = sc.nextLine();
 				
 	 			String sql= "DELETE FROM HASDISCOUNT WHERE DISCOUNTID=%s";
-				sqlSelect = String.format(sql, discountID);
+				sqlSelect = String.format(sql,"'"+discountID+"'");
 				String sql1= "DELETE FROM DISCOUNT WHERE DISCOUNTID=%s";
-				sqlSelect1 = String.format(sql1, discountID);
+				sqlSelect1 = String.format(sql1, "'"+discountID+"'");
 			
 			
             }
@@ -64,16 +64,13 @@ Class.forName("org.mariadb.jdbc.Driver");
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          System.out.println("*************************************************");
-        }
         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
         
         }
 			
-			} finally {
-                close(result);                  
+			} finally {              
                 close(statement);
                 close(connection);
                 
@@ -97,14 +94,5 @@ static void close(Statement statement) {
             } catch(Throwable whatever) {}
         }
     }
-    
- static void close(ResultSet result) {
-        if(result != null) {
-            try {
-            result.close();
-            } catch(Throwable whatever) {}
-        }
-    }
-    
-    
+
 }

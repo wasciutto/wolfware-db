@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class updateDiscountInfo {
+public class deleteSupplierInfo {
 
 
 // Update your user info alone here
@@ -30,9 +30,10 @@ Class.forName("org.mariadb.jdbc.Driver");
             Statement statement = null;
 			
             
-			String discountID = null;
+			String supplierID = null;
             String sqlSelect = null;
-			      Scanner sc= new Scanner(System.in);
+			String sqlSelect1 = null;
+			Scanner sc= new Scanner(System.in);
             try {
             // Get a connection instance from the first driver in the
             // DriverManager list that recognizes the URL jdbcURL
@@ -42,35 +43,35 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter discount ID: "); 
-      			discountID = sc.nextLine();
+				System.out.print("Enter suppplier ID to be deleted: "); 
+      			supplierID = sc.nextLine();
 				
-				System.out.print("Enter updated discount value: "); 
-      			String dValue = sc.nextLine();
+				String sql= "DELETE FROM HASSUPPLIERS where SUPPLIERID =%s";
+				sqlSelect = String.format(sql,"'"+supplierID+"'");
+				String sql1= "DELETE FROM SUPPLIERS where SUPPLIERID = %s";
+				sqlSelect1 = String.format(sql1,"'"+supplierID+"'");
 				
-      			String sql= "UPDATE DISCOUNT SET DISCOUNTVALUE=%s WHERE DISCOUNTID=%s";
-				sqlSelect = String.format(sql,"'"+dValue+"'","'"+discountID+"'");
-				
+			
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id");
+              System.out.print("Incorrect format for input");
             }
 			
 			try{
 			connection.setAutoCommit(false);
   			statement.executeQuery(sqlSelect);
+			statement.executeQuery(sqlSelect1);
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          
-        catch (Exception e){
+         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
         
         }
 			
 			} finally {
-                                 
+                                
                 close(statement);
                 close(connection);
                 
@@ -94,6 +95,5 @@ static void close(Statement statement) {
             } catch(Throwable whatever) {}
         }
     }
-    
-
+       
 }

@@ -43,31 +43,31 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter discount ID (Please enter ID in quotes): "); 
+				System.out.print("Enter discount ID : "); 
       			discountID = sc.nextLine();
 				
-				System.out.print("Enter discount type in quotes): "); 
+				System.out.print("Enter discount type: "); 
       			String dType = sc.nextLine();
 				
-				System.out.print("Enter discount value in quotes): "); 
+				System.out.print("Enter discount value: "); 
       			String dValue = sc.nextLine();
 				
-				System.out.print("Enter Start Date (in YYYY-MM-DD format in quotes): ");
+				System.out.print("Enter Start Date (in YYYY-MM-DD format): ");
       			String startDate = sc.nextLine();
 				
-				System.out.print("Enter End Date (in YYYY-MM-DD format in quotes): ");
+				System.out.print("Enter End Date (in YYYY-MM-DD format): ");
       			String endDate = sc.nextLine();
 				
-				System.out.print("Enter product ID (Please enter ID in quotes): "); 
+				System.out.print("Enter product ID (Please enter ID): "); 
       			String productID = sc.nextLine();
       			
-				System.out.print("Enter batch ID (Please enter ID in quotes): "); 
+				System.out.print("Enter batch ID (Please enter ID): "); 
       			String batchID = sc.nextLine();
 				
       			String sql= "INSERT INTO STORE VALUES (%s,%s,%s,%s,%s)";
-				sqlSelect = String.format(sql, discountID, dType, dValue, startDate, endDate);
+				sqlSelect = String.format(sql,"'"+discountID+"'","'"+dType+"'","'"+dValue+"'","'"+startDate+"'","'"+endDate+"'");
 				String sql1= "INSERT INTO HASDISCOUNT VALUES (%s,%s,%s)";
-				sqlSelect1 = String.format(sql1, discountID, productID, batchID);
+				sqlSelect1 = String.format(sql1,"'"+discountID+"'","'"+productID+"'","'"+batchID+"'");
 			
 			
             }
@@ -82,8 +82,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          System.out.println("*************************************************");
-        }
+          
         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
@@ -91,7 +90,7 @@ Class.forName("org.mariadb.jdbc.Driver");
         }
 			
 			} finally {
-                close(result);                  
+                                 
                 close(statement);
                 close(connection);
                 
@@ -115,14 +114,5 @@ static void close(Statement statement) {
             } catch(Throwable whatever) {}
         }
     }
-    
- static void close(ResultSet result) {
-        if(result != null) {
-            try {
-            result.close();
-            } catch(Throwable whatever) {}
-        }
-    }
-    
     
 }

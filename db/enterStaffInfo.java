@@ -41,35 +41,35 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter staff ID (Please enter ID in quotes): "); 
+				System.out.print("Enter staff ID: "); 
       			staffID = sc.nextLine();
 				
-				System.out.print("Enter store ID (Please enter ID in quotes): "); 
+				System.out.print("Enter store ID: "); 
       			String storeID = sc.nextLine();
       			
-				System.out.print("Enter name in quotes): "); 
+				System.out.print("Enter name: "); 
       			String name = sc.nextLine();
 				
 				System.out.print("Enter age"); 
       			Integer age = sc.nextInt();
 				
-				System.out.print("Enter home address in quotes");
+				System.out.print("Enter home address");
 				String homeAddr= sc.nextLine();
 				
-				System.out.print("Enter job title in quotes");
+				System.out.print("Enter job title");
 				String jobT= sc.nextLine();
 				
-				System.out.print("Enter phone number in quotes");
+				System.out.print("Enter phone number");
 				String phoneNumber= sc.nextLine();
 				
-				System.out.print("Enter email address in quotes");
+				System.out.print("Enter email address");
 				String email= sc.nextLine();
 				
-				System.out.print("Enter timestamp in YYYY-MM-DD HH:MM:SS format in quotes");
+				System.out.print("Enter timestamp in YYYY-MM-DD format");
 				String timestamp= sc.nextLine();
 				
       			String sql= "INSERT INTO STAFF VALUES (%s,%s,%s,%d,%s,%s,%s,%s,%s)";
-				sqlSelect = String.format(sql, staffID, storeID, name, age, homeAddr, jobT, phoneNumber, email, timestamp);
+				sqlSelect = String.format(sql,"'"+staffID+"'","'"+storeID+"'","'"+name+"'","'"+age+"'","'"+homeAddr+"'","'"+jobT+"'","'"+phoneNumber+"'","'"+email+"'","'"+timestamp+"'");
 			
 			
             }
@@ -83,8 +83,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          System.out.println("*************************************************");
-        }
+          
         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
@@ -92,7 +91,7 @@ Class.forName("org.mariadb.jdbc.Driver");
         }
 			
 			} finally {
-                close(result);                  
+                                
                 close(statement);
                 close(connection);
                 
@@ -117,13 +116,5 @@ static void close(Statement statement) {
         }
     }
     
- static void close(ResultSet result) {
-        if(result != null) {
-            try {
-            result.close();
-            } catch(Throwable whatever) {}
-        }
-    }
-    
-    
+ 
 }

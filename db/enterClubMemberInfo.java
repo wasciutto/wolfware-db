@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class updateDiscountInfo {
+public class enterClubMemberInfo {
 
 
 // Update your user info alone here
@@ -30,8 +30,9 @@ Class.forName("org.mariadb.jdbc.Driver");
             Statement statement = null;
 			
             
-			String discountID = null;
+			String customerID = null;
             String sqlSelect = null;
+			String sqlSelect1 = null;
 			      Scanner sc= new Scanner(System.in);
             try {
             // Get a connection instance from the first driver in the
@@ -42,35 +43,65 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter discount ID: "); 
-      			discountID = sc.nextLine();
+				System.out.print("Enter customer ID: "); 
+      			customerID = sc.nextLine();
 				
-				System.out.print("Enter updated discount value: "); 
-      			String dValue = sc.nextLine();
+				System.out.print("Enter first name: "); 
+      			String fname = sc.nextLine();
 				
-      			String sql= "UPDATE DISCOUNT SET DISCOUNTVALUE=%s WHERE DISCOUNTID=%s";
-				sqlSelect = String.format(sql,"'"+dValue+"'","'"+discountID+"'");
+				System.out.print("Enter last name: "); 
+      			String lname = sc.nextLine();
 				
+				System.out.print("Enter membership level: ");
+      			String mLevel = sc.nextLine();
+				
+				System.out.print("Enter email address");
+				String email= sc.nextLine();
+				
+				System.out.print("Enter phone number");
+				String phoneNumber= sc.nextLine();
+				
+				System.out.print("Enter home address");
+				String homeAddr= sc.nextLine();
+				
+				System.out.print("Enter status: ");
+      			String status = sc.nextLine();
+				
+				System.out.print("Enter staff ID: "); 
+      			String staffID = sc.nextLine();
+				
+				System.out.print("Enter action"); 
+      			String action = sc.nextLine();
+      			
+				System.out.print("Enter action date: "); 
+      			String actionD = sc.nextLine();
+				
+      			String sql= "INSERT INTO CLUBMEMBERS VALUES (%s,%s,%s,%s,%s,%s,%s,%s)";
+				sqlSelect = String.format(sql,"'"+customerID+"'","'"+fname+"'","'"+lname+"'","'"+mLevel+"'","'"+email+"'"+,"'"+phoneNumber+"'","'"+homeAddr+"'","'"+status+"'");
+				String sql1= "INSERT INTO SIGNSUPCANCELS VALUES (%s,%s,%s,%s)";
+				sqlSelect1 = String.format(sql1,"'"+staffID+"'","'"+customerID+"'","'"+actionD+"'","'"+action+"'");
+			
+			
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id");
+              System.out.print("Incorrect format for input");
             }
 			
 			try{
 			connection.setAutoCommit(false);
   			statement.executeQuery(sqlSelect);
+			statement.executeQuery(sqlSelect1);
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          
-        catch (Exception e){
+         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
         
         }
 			
 			} finally {
-                                 
+                                
                 close(statement);
                 close(connection);
                 
@@ -94,6 +125,5 @@ static void close(Statement statement) {
             } catch(Throwable whatever) {}
         }
     }
-    
-
+       
 }

@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class updateDiscountInfo {
+public class updateClubMemberInfo {
 
 
 // Update your user info alone here
@@ -30,9 +30,9 @@ Class.forName("org.mariadb.jdbc.Driver");
             Statement statement = null;
 			
             
-			String discountID = null;
+			String customerID = null;
             String sqlSelect = null;
-			      Scanner sc= new Scanner(System.in);
+			Scanner sc= new Scanner(System.in);
             try {
             // Get a connection instance from the first driver in the
             // DriverManager list that recognizes the URL jdbcURL
@@ -42,18 +42,36 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter discount ID: "); 
-      			discountID = sc.nextLine();
+				System.out.print("Enter customer ID to be updated: "); 
+      			customerID = sc.nextLine();
 				
-				System.out.print("Enter updated discount value: "); 
-      			String dValue = sc.nextLine();
+				System.out.print("Enter first name: "); 
+      			String fname = sc.nextLine();
 				
-      			String sql= "UPDATE DISCOUNT SET DISCOUNTVALUE=%s WHERE DISCOUNTID=%s";
-				sqlSelect = String.format(sql,"'"+dValue+"'","'"+discountID+"'");
+				System.out.print("Enter last name: "); 
+      			String lname = sc.nextLine();
+				
+				System.out.print("Enter membership level: ");
+      			String mLevel = sc.nextLine();
+				
+				System.out.print("Enter email address");
+				String email= sc.nextLine();
+				
+				System.out.print("Enter phone number");
+				String phoneNumber= sc.nextLine();
+				
+				System.out.print("Enter home address");
+				String homeAddr= sc.nextLine();
+				
+				System.out.print("Enter status: ");
+      			String status = sc.nextLine();
+				
+				String sql= "UPDATE CLUBMEMBERS SET FIRSTNAME= %s, LASTNAME=%s, MEMBERSHIPLEVEL=%s, EMAILADDRESS=%s, PHONENO = %s, HOMEADDRESS=%s, ACTIVESTATUS=%s WHERE CUSTOMERID =%s";
+				sqlSelect = String.format(sql,"'"+fname+"'","'"+lname+"'","'"+mLevel+"'","'"+email+"'"+,"'"+phoneNumber+"'","'"+homeAddr+"'","'"+status+"'","'"+customerID+"'");
 				
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id");
+              System.out.print("Incorrect format for input");
             }
 			
 			try{
@@ -62,7 +80,6 @@ Class.forName("org.mariadb.jdbc.Driver");
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          
         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
@@ -70,7 +87,6 @@ Class.forName("org.mariadb.jdbc.Driver");
         }
 			
 			} finally {
-                                 
                 close(statement);
                 close(connection);
                 
@@ -94,6 +110,5 @@ static void close(Statement statement) {
             } catch(Throwable whatever) {}
         }
     }
-    
 
 }

@@ -41,14 +41,35 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter staff ID (Please enter ID in quotes): "); 
+				System.out.print("Enter staff ID "); 
       			staffID = sc.nextLine();
 				
-				System.out.print("Enter updated phone number in quotes");
+				System.out.print("Enter store ID: "); 
+      			String storeID = sc.nextLine();
+      			
+				System.out.print("Enter name: "); 
+      			String name = sc.nextLine();
+				
+				System.out.print("Enter age"); 
+      			Integer age = sc.nextInt();
+				
+				System.out.print("Enter home address");
+				String homeAddr= sc.nextLine();
+				
+				System.out.print("Enter job title");
+				String jobT= sc.nextLine();
+				
+				System.out.print("Enter phone number");
 				String phoneNumber= sc.nextLine();
+				
+				System.out.print("Enter email address");
+				String email= sc.nextLine();
+				
+				System.out.print("Enter timestamp in YYYY-MM-DD format");
+				String timestamp= sc.nextLine();
 					
-      			String sql= "UPDATE STAFF SET PHONENUMBER=%s WHERE STAFFID=%s";
-				sqlSelect = String.format(sql, phoneNumber, staffID);
+      			String sql= "UPDATE STAFF SET STOREID=%s, NAME=%s, AGE=%s, HOMEADDRESS=%s, JOBTITLE=%s, PHONENUMBER=%s, EMAILADDRESS=%s, TIMEOFEMPLOYMENT=%s WHERE STAFFID=%s";
+				sqlSelect = String.format(sql,"'"+storeID+"'","'"+name+"'","'"+age+"'","'"+homeAddr+"'","'"+jobT+"'","'"+phoneNumber+"'","'"+email+"'","'"+timestamp+"'","'"+staffID+"'");
 			
 			
             }
@@ -62,8 +83,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-          System.out.println("*************************************************");
-        }
+          
         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
@@ -71,7 +91,7 @@ Class.forName("org.mariadb.jdbc.Driver");
         }
 			
 			} finally {
-                close(result);                  
+                                
                 close(statement);
                 close(connection);
                 
@@ -92,14 +112,6 @@ static void close(Statement statement) {
         if(statement != null) {
             try {
             statement.close();
-            } catch(Throwable whatever) {}
-        }
-    }
-    
- static void close(ResultSet result) {
-        if(result != null) {
-            try {
-            result.close();
             } catch(Throwable whatever) {}
         }
     }
