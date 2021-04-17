@@ -1,8 +1,3 @@
-// This example is created by Seokyong Hong
-// modified by Shrikanth N C to support MySQL(MariaDB)
-
-// Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
-
 import java.sql.*;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -10,10 +5,8 @@ import java.util.InputMismatchException;
 public class getSalesGrowth {
 
 
-// Update your user info alone here
-private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; // Using SERVICE_NAME
+private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; 
 
-// Update your user and password info here!
 
 private static final String user = "pattri";
 private static final String password = "200226336";
@@ -33,67 +26,102 @@ Class.forName("org.mariadb.jdbc.Driver");
             int year = 2020;
             String sqlSelect = null;
 			      Scanner sc= new Scanner(System.in);
+            String defaultCompareBy = "Month";
             try {
             // Get a connection instance from the first driver in the
             // DriverManager list that recognizes the URL jdbcURL
             connection = DriverManager.getConnection(jdbcURL, user, password);
             statement = connection.createStatement();
-            // Create a statement instance that will be sending
-            // your SQL statements to the DBMS
+            // Create a statement instance that will be send
+            // SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter store ID (Please enter ID in quotes): "); 
-      			storeID = sc.nextLine();
-      			
-      			System.out.print("Enter Start Date (in MMDDYYYY format): ");
-      			String startDate = sc.nextLine();
-      			String startMonth = startDate.substring(0,2);
-				String startYear = startDate.substring(4,8);
-				
-				System.out.print("Enter End Date (in MMDDYYYY format): ");
-      			String endDate = sc.nextLine();
-				String endMonth = endDate.substring(0,2);
-				String endYear = endDate.substring(4,8);
+  				    System.out.print("Enter store ID: "); 
+        			storeID = sc.nextLine();
+        			
+        			System.out.print("Enter Start Date (in YYYY-MM-DD format in quotes): ");
+        			String startDate = sc.nextLine();
+        			String startMonth = startDate.substring(5,7);
+  				    String startYear = startDate.substring(0,4);
+        			
+        			System.out.print("Enter End Date (in YYYY-MM-DD format in quotes): ");
+      			  String endDate = sc.nextLine();
+      				String endMonth = endDate.substring(5,7);
+      				String endYear = endDate.substring(0,4);
 				
 								
-				System.out.print("Compare By (Month,Year?): ");
-      			String compareBy = sc.nextLine();	
+  		        System.out.print("Compare By (Month,Year?): ");
+        			String compareBy = sc.nextLine();	
 			
-			if (compareBy.equals("Month")){
-            
-            String sql = "SELECT D.STOREID, MONTH(B.PURCHASEDATE) AS MONTH,SUM(B.TOTALPRICE) AS TOTALSALES FROM TRANSACTIONS B JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND MONTH(B.PURCHASEDATE) >= %d AND MONTH(B.PURCHASEDATE)<= %d GROUP BY MONTH";
-			sqlSelect = String.format(sql, storeID, Integer.valueOf(startMonth),Integer.valueOf(endMonth));
-			}
-			else {
+  			      if (compareBy.equals("Month")){
+              
+              String sql = "SELECT D.STOREID, MONTH(B.PURCHASEDATE) AS MONTH,SUM(B.TOTALPRICE) AS TOTALSALES FROM TRANSACTIONS B JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND B.PURCHASEDATE >= %s AND B.PURCHASEDATE<= %s GROUP BY MONTH";
+  			      sqlSelect = String.format(sql, "'"+storeID+"'", "'"+startDate+"'","'"+endDate+"'");
+  			      }
+    			else {
       
-				String sql = "SELECT D.STOREID, YEAR(B.PURCHASEDATE) AS YEAR,SUM(B.TOTALPRICE) AS TOTALSALES FROM TRANSACTIONS B JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND YEAR(B.PURCHASEDATE) >= %d AND YEAR(B.PURCHASEDATE)<= %d GROUP BY YEAR";
-				sqlSelect = String.format(sql, storeID, Integer.valueOf(startYear),Integer.valueOf(endYear));
-        
-			}
+				    String sql = "SELECT D.STOREID, YEAR(B.PURCHASEDATE) AS YEAR,SUM(B.TOTALPRICE) AS TOTALSALES FROM TRANSACTIONS B JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND B.PURCHASEDATE >= %s AND B.PURCHASEDATE<= %s GROUP BY YEAR";
+				      sqlSelect = String.format(sql, "'"+storeID+"'", "'"+startDate+"'","'"+endDate+"'");
+              defaultCompareBy = "Year";
+			        }
 			
 			
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id or year.");
+              System.out.println("Incorrect format for Store Id or year.");
             }
 			
 			try{
   			  result = statement.executeQuery(sqlSelect);
-          System.out.println("*************************************************");
-          System.out.println("| STOREID\t|\tMONTH\t|\tTOTALSALES\t\t |");
-          System.out.println("*************************************************");
-          while (result.next()) {
-              String STOREID = result.getString("STOREID");
-              String MONTH = result.getString("MONTH");
-            
-              float TOTALSALES = result.getFloat("TOTALSALES");
+          
+          if(result.next()) {
               
-              System.out.println("| "+STOREID + "\t|\t" + MONTH+ "\t|\t" + TOTALSALES+" |");
+              if (defaultCompareBy.equals("Month")) {
+                result.beforeFirst();
+                System.out.println("**********************************************************");
+                System.out.println("| STOREID\t|\tMONTH\t|\tTOTALSALES\t |");
+                System.out.println("**********************************************************");
+                
+                
+                while (result.next()) {
+                    String STOREID = result.getString("STOREID");
+                    String MONTH = result.getString("MONTH");
+                  
+                    float TOTALSALES = result.getFloat("TOTALSALES");
+                    
+                    System.out.println("| "+STOREID + "\t\t|\t" + MONTH+ "\t|\t" + TOTALSALES+"\t\t |");
+                }
+                System.out.println("**********************************************************");
+              }
+              
+              else {
+                result.beforeFirst();
+                System.out.println("**********************************************************");
+                System.out.println("| STOREID\t|\tYEAR\t|\tTOTALSALES\t |");
+                System.out.println("**********************************************************");
+                
+                
+                while (result.next()) {
+                    String STOREID = result.getString("STOREID");
+                    String YEAR = result.getString("YEAR");
+                  
+                    float TOTALSALES = result.getFloat("TOTALSALES");
+                    
+                    System.out.println("| "+STOREID + "\t\t|\t" + YEAR+ "\t|\t" + TOTALSALES+"\t\t |");
+                }
+                System.out.println("**********************************************************");
+              
+              }
+              
+            }
+          else{
+          System.out.println("No results!");
           }
-          System.out.println("*************************************************");
+          
+          
         }
         catch (Exception e){
-        System.out.println("No results");
+        System.out.println("Error getting results");
         
         }
 			//Insert the patient into the specified ward
