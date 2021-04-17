@@ -28,6 +28,7 @@ Class.forName("org.mariadb.jdbc.Driver");
             int year = 2020;
             String sqlSelect = null;
             String compareBy = null;
+            String defaultCompareBy = "Month";
 			      Scanner sc= new Scanner(System.in);
             try {
             
@@ -55,14 +56,14 @@ Class.forName("org.mariadb.jdbc.Driver");
 			
 			        if (compareBy.equals("Month")){
             
-                  String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'ACTIVE' AND B.ACTIONDATE >= %s AND B.ACTIONDATE<= %s GROUP BY YEAR,MONTH";
+                  String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'True' AND B.ACTIONDATE >= %s AND B.ACTIONDATE<= %s GROUP BY YEAR,MONTH";
 			            sqlSelect = String.format(sql, "'"+storeID+"'", "'"+startDate+"'","'"+endDate+"'");
 			          }
 			      else {
       
-				        String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'ACTIVE' AND B.ACTIONDATE >= %s AND B.ACTIONDATE<= %s GROUP BY YEAR";
+				        String sql = "SELECT D.STOREID, YEAR(B.ACTIONDATE) AS YEAR, MONTH(B.ACTIONDATE) AS MONTH, COUNT(A.CUSTOMERID) AS TOTALSIGNUPS FROM CLUBMEMBERS A JOIN SIGNSUPCANCELS B ON A.CUSTOMERID = B.CUSTOMERID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %S AND A.ACTIVESTATUS = 'True' AND B.ACTIONDATE >= %s AND B.ACTIONDATE<= %s GROUP BY YEAR";
 				        sqlSelect = String.format(sql, "'"+storeID+"'", "'"+startDate+"'","'"+endDate+"'");
-        
+                defaultCompareBy = "Year";
 			        }
 			
 			
@@ -71,28 +72,32 @@ Class.forName("org.mariadb.jdbc.Driver");
               System.out.print("Incorrect format for Store Id or date.");
             }
 			
-			try{
-  			  result = statement.executeQuery(sqlSelect);
-          System.out.println("**************************************************************************");
-		  if (compareBy.equals("Month")){
-          System.out.println("| STOREID\t|\tYEAR\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
-		  }
-		  else {
-			  System.out.println("| STOREID\t|\tYEAR\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
-		  }
-          System.out.println("**************************************************************************");
-          while (result.next()) {
-              String STOREID = result.getString("STOREID");
-			        int TOTALSIGNUPS = result.getInt("TOTALSIGNUPS");
-			  
-              String MONTH = result.getString("MONTH");
-  			      String YEAR = result.getString("YEAR");
-              System.out.println("| "+STOREID + "\t|\t" + YEAR + "\t|\t" + MONTH + "\t|\t" + TOTALSIGNUPS+"\t\t |");
-				  }
-          System.out.println("**************************************************************************");
-        }
+  			try{
+            result = statement.executeQuery(sqlSelect);
+    			  if(result.next()) {
+            
+            result.beforeFirst();
+            System.out.println("**************************************************************************");
+      		  System.out.println("| STOREID\t|\tYEAR\t|\tMONTH\t|\tTOTALSIGNUPS\t |");
+      		 
+            System.out.println("**************************************************************************");
+                while (result.next()) {
+                    String STOREID = result.getString("STOREID");
+      			        int TOTALSIGNUPS = result.getInt("TOTALSIGNUPS");
+      			  
+                    String MONTH = result.getString("MONTH");
+        			      String YEAR = result.getString("YEAR");
+                    System.out.println("| "+STOREID + "\t\t|\t" + YEAR + "\t|\t" + MONTH + "\t|\t" + TOTALSIGNUPS+"\t\t |");
+      				  }
+                System.out.println("**************************************************************************");
+            }
+            
+           else{
+            System.out.println("No results!");
+            }
+         }
         catch (Exception e){
-        System.out.println("No results");
+        System.out.println("Error getting results");
         
         }
 			
