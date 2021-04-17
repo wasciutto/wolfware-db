@@ -1,12 +1,8 @@
-// This example is created by Seokyong Hong
-// modified by Shrikanth N C to support MySQL(MariaDB)
-
-// Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
 
 import java.sql.*;
 import java.util.Scanner;
 
-public class getTotalSales {
+public class gettotalSales {
 
 
 // Update your user info alone here
@@ -41,7 +37,7 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-            System.out.print("Enter store ID (Please enter ID in quotes): "); 
+            System.out.print("Enter store ID: "); 
       			storeID = sc.nextLine();
       			
       			System.out.print("Enter Reporting Year: ");
@@ -50,25 +46,34 @@ Class.forName("org.mariadb.jdbc.Driver");
             
             String sql = "SELECT D.STOREID,A.PRODUCTID,SUM(A.QUANTITYSOLD) AS QUANTITYSOLD,SUM(A.TOTALSOLDPRICE) AS TOTALSOLDPRICE, YEAR(B.PURCHASEDATE) REPORTINGYEAR FROM TRANSACTIONITEMS A JOIN TRANSACTIONS B ON A.TRANSACTIONID = B.TRANSACTIONID JOIN STAFF C ON B.STAFFID = C.STAFFID JOIN STORE D ON C.STOREID = D.STOREID WHERE D.STOREID = %s AND YEAR(B.PURCHASEDATE)=%d GROUP BY D.STOREID,A.PRODUCTID";
 			
-			sqlSelect = String.format(sql, storeID, year);
+			      sqlSelect = String.format(sql, "'"+storeID+"'", year);
             }
             catch(Throwable oops) {
               System.out.print("Incorrect format for Store Id or year.");
             }
 			
 			
-			result = statement.executeQuery(sqlSelect);
-
-        while (result.next()) {
-            String STOREID = result.getString("STOREID");
-            String PRODUCTID = result.getString("PRODUCTID");
-            String QUANTITYSOLD = result.getString("QUANTITYSOLD");
-            float TOTALSOLDPRICE = result.getFloat("TOTALSOLDPRICE");
-            float REPORTINGYEAR = result.getFloat("REPORTINGYEAR");
-            
-            System.out.println(STOREID + "   |   " + PRODUCTID+ "   |   " + QUANTITYSOLD+ "   |   " + TOTALSOLDPRICE+ "   |   "+REPORTINGYEAR);
+         result = statement.executeQuery(sqlSelect);
+        if(result.next()) {
+          result.beforeFirst();
+          System.out.println("*******************************************************************************************************************");
+          System.out.println("| STOREID\t|\tPRODUCTID\t|\tQUANTITYSOLD\t|\tTOTALSOLDPRICE\t|\tREPORTINGYEAR\t |");
+          System.out.println("*******************************************************************************************************************");
+          while (result.next()) {
+              String STOREID = result.getString("STOREID");
+              String PRODUCTID = result.getString("PRODUCTID");
+              String QUANTITYSOLD = result.getString("QUANTITYSOLD");
+              float TOTALSOLDPRICE = result.getFloat("TOTALSOLDPRICE");
+              int REPORTINGYEAR = result.getInt("REPORTINGYEAR");
+              
+              System.out.println(STOREID + "\t\t|\t" + PRODUCTID+ "\t\t|\t" + QUANTITYSOLD+ "\t\t|\t" + TOTALSOLDPRICE+ "\t\t|\t"+REPORTINGYEAR + "\t\t |");
+          }
+        System.out.println("*******************************************************************************************************************");
         }
-			//Insert the patient into the specified ward
+        else{
+          System.out.println("No results!");
+          }
+		
 			if(!statement.execute(sqlSelect)) {
 			System.out.println("Incorrect storeID or Year");
 			//DBManager.rollbackTransaction();
