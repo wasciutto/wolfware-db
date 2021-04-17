@@ -1,3 +1,4 @@
+
 import java.sql.*;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -36,12 +37,10 @@ Class.forName("org.mariadb.jdbc.Driver");
             // DriverManager list that recognizes the URL jdbcURL
             connection = DriverManager.getConnection(jdbcURL, user, password);
             statement = connection.createStatement();
-            // Create a statement instance that will be send
-            // SQL statements to the DBMS
+            // Create a statement instance that will be sending
+            // your SQL statements to the DBMS
             
       			try{
-				System.out.print("Enter store ID: "); 
-      			storeID = sc.nextLine();
 				
 				System.out.print("Enter customer ID: "); 
       			customerID = sc.nextLine();
@@ -55,38 +54,45 @@ Class.forName("org.mariadb.jdbc.Driver");
       			String endDate = sc.nextLine();
 				String endMonth = endDate.substring(5,7);
 				String endYear = endDate.substring(0,4);
-				
-			String sql = "SELECT C.STOREID, A.CUSTOMERID, B.PRODUCTID, A.PURCHASEDATE, B.QUANTITYSOLD FROM TRANSACTIONS A, TRANSACTIONITEMS B,STAFF C WHERE A.TRANSACTIONID = B.TRANSACTIONID AND A.STAFFID = C.STAFFID AND A.CUSTOMERID = %s AND A.PURCHASEDATE >=%s AND A.PURCHASEDATE <=%s AND C.STOREID = %s GROUP BY B.PRODUCTID, A.PURCHASEDATE";
-			sqlSelect = String.format(sql, "'"+customerID+"'","'"+startDate+"'","'"+endDate+"'","'"+storeID+"'");	
+				//AND C.STOREID = %s
+			String sql = "SELECT C.STOREID, A.CUSTOMERID, B.PRODUCTID, A.PURCHASEDATE, SUM(B.QUANTITYSOLD) as QUANTITYSOLD, SUM(A.TOTALPRICE) as AMOUNTPAID FROM TRANSACTIONS A, TRANSACTIONITEMS B,STAFF C WHERE A.TRANSACTIONID = B.TRANSACTIONID AND A.STAFFID = C.STAFFID AND A.CUSTOMERID = %s AND A.PURCHASEDATE >=%s AND A.PURCHASEDATE <=%s  GROUP BY B.PRODUCTID, A.PURCHASEDATE";
+			sqlSelect = String.format(sql, "'"+customerID+"'","'"+startDate+"'","'"+endDate+"'");	
 			
-			
+			    
 			
             }
             catch(Throwable oops) {
-              System.out.print("Incorrect format for Store Id or year.");
+              System.out.println("Incorrect format for Store Id or year.");
             }
 			
 			try{
   			  result = statement.executeQuery(sqlSelect);
-          System.out.println("******************************************************************************************************************");
-		  
-          System.out.println("| STOREID\t|\tCUSTOMERID\t|\tPRODUCTID\t|\tPURCHASEDATE\t|\tQUANTITYSOLD\t |");
-		  
-		  
-          System.out.println("******************************************************************************************************************");
-          while (result.next()) {
-              String STOREID = result.getString("STOREID");
-              String CUSTOMERID = result.getString("CUSTOMERID");
-              String PRODUCTID = result.getString("PRODUCTID");
-              String PURCHASEDATE = result.getString("PURCHASEDATE");
-			        int QUANTITYSOLD = result.getInt("QUANTITYSOLD");
-			  
-			        System.out.println("| "+STOREID + "\t|\t" + CUSTOMERID+ "\t|\t" + PRODUCTID + "\t\t|\t" + PURCHASEDATE+ "\t|\t" + QUANTITYSOLD +"\t\t |");
-			  }
-          System.out.println("******************************************************************************************************************");
+          if(result.next()) {
+            result.beforeFirst();
+            System.out.println("******************************************************************************************************************************************");
+  		  
+            System.out.println("| STOREID\t|\tCUSTOMERID\t|\tPRODUCTID\t|\tPURCHASEDATE\t|\tQUANTITYSOLD\t|\tAMOUNTPAID\t |");
+  		  
+  		  
+            System.out.println("******************************************************************************************************************************************");
+            while (result.next()) {
+                String STOREID = result.getString("STOREID");
+                String CUSTOMERID = result.getString("CUSTOMERID");
+                String PRODUCTID = result.getString("PRODUCTID");
+                String PURCHASEDATE = result.getString("PURCHASEDATE");
+  			        int QUANTITYSOLD = result.getInt("QUANTITYSOLD");
+                float AMOUNTPAID = result.getFloat("AMOUNTPAID");
+  			  
+  			        System.out.println("| "+STOREID + "\t\t|\t" + CUSTOMERID+ "\t\t|\t" + PRODUCTID + "\t\t|\t" + PURCHASEDATE+ "\t|\t" + QUANTITYSOLD +"\t\t|\t"+AMOUNTPAID+ "\t\t |");
+  			  }
+            System.out.println("******************************************************************************************************************************************");
+        }
+        else{
+          System.out.println("No results!");
+          }
         }
         catch (Exception e){
-        System.out.println("No results");
+        System.out.println("Error getting results");
         
         }
 			
