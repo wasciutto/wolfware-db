@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class enterStaffInfo {
+public class updateStaffInfo {
 
 
 // Update your user info alone here
@@ -41,47 +41,18 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-<<<<<<< HEAD
-				System.out.print("Enter staff ID (Please enter ID in quotes): "); 
-      			staffID = sc.nextLine();
-				
-				System.out.print("Enter store ID (Please enter ID in quotes): "); 
-      			String storeID = sc.nextLine();
-      			
-				System.out.print("Enter name in quotes): "); 
-=======
-				System.out.print("Enter staff ID: "); 
+				System.out.print("Enter staff ID "); 
       			staffID = sc.nextLine();
 				
 				System.out.print("Enter store ID: "); 
       			String storeID = sc.nextLine();
       			
 				System.out.print("Enter name: "); 
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
       			String name = sc.nextLine();
 				
 				System.out.print("Enter age"); 
       			Integer age = sc.nextInt();
 				
-<<<<<<< HEAD
-				System.out.print("Enter home address in quotes");
-				String homeAddr= sc.nextLine();
-				
-				System.out.print("Enter job title in quotes");
-				String jobT= sc.nextLine();
-				
-				System.out.print("Enter phone number in quotes");
-				String phoneNumber= sc.nextLine();
-				
-				System.out.print("Enter email address in quotes");
-				String email= sc.nextLine();
-				
-				System.out.print("Enter timestamp in YYYY-MM-DD HH:MM:SS format in quotes");
-				String timestamp= sc.nextLine();
-				
-      			String sql= "INSERT INTO STAFF VALUES (%s,%s,%s,%d,%s,%s,%s,%s,%s)";
-				sqlSelect = String.format(sql, staffID, storeID, name, age, homeAddr, jobT, phoneNumber, email, timestamp);
-=======
 				System.out.print("Enter home address");
 				String homeAddr= sc.nextLine();
 				
@@ -96,10 +67,9 @@ Class.forName("org.mariadb.jdbc.Driver");
 				
 				System.out.print("Enter timestamp in YYYY-MM-DD format");
 				String timestamp= sc.nextLine();
-				
-      			String sql= "INSERT INTO STAFF VALUES (%s,%s,%s,%d,%s,%s,%s,%s,%s)";
-				sqlSelect = String.format(sql,"'"+staffID+"'","'"+storeID+"'","'"+name+"'","'"+age+"'","'"+homeAddr+"'","'"+jobT+"'","'"+phoneNumber+"'","'"+email+"'","'"+timestamp+"'");
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
+					
+      			String sql= "UPDATE STAFF SET STOREID=%s, NAME=%s, AGE=%s, HOMEADDRESS=%s, JOBTITLE=%s, PHONENUMBER=%s, EMAILADDRESS=%s, TIMEOFEMPLOYMENT=%s WHERE STAFFID=%s";
+				sqlSelect = String.format(sql,"'"+storeID+"'","'"+name+"'","'"+age+"'","'"+homeAddr+"'","'"+jobT+"'","'"+phoneNumber+"'","'"+email+"'","'"+timestamp+"'","'"+staffID+"'");
 			
 			
             }
@@ -113,12 +83,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 			connection.commit();
 			System.out.println("Statement Executed");
           }
-<<<<<<< HEAD
-          System.out.println("*************************************************");
-        }
-=======
           
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
         catch (Exception e){
 		connection.rollback();
         System.out.println("Statement not executed");
@@ -126,11 +91,7 @@ Class.forName("org.mariadb.jdbc.Driver");
         }
 			
 			} finally {
-<<<<<<< HEAD
-                close(result);                  
-=======
                                 
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
                 close(statement);
                 close(connection);
                 
@@ -155,17 +116,5 @@ static void close(Statement statement) {
         }
     }
     
-<<<<<<< HEAD
- static void close(ResultSet result) {
-        if(result != null) {
-            try {
-            result.close();
-            } catch(Throwable whatever) {}
-        }
-    }
     
-    
-=======
- 
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
 }
