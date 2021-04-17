@@ -1,7 +1,4 @@
-// This example is created by Seokyong Hong
-// modified by Shrikanth N C to support MySQL(MariaDB)
 
-// Relpace all $USER$ with your unity id and $PASSWORD$ with your 9 digit student id or updated password (if changed)
 
 import java.sql.*;
 import java.util.Scanner;
@@ -41,38 +38,41 @@ Class.forName("org.mariadb.jdbc.Driver");
             // your SQL statements to the DBMS
             
       			try{
-            System.out.print("Enter store ID (Please enter ID in quotes): "); 
+            System.out.print("Enter store ID: "); 
       			storeID = sc.nextLine();
       			
       			            
             String sql = "SELECT B.STOREID, A.PRODUCTID, A.QUANTITYINSTOCK FROM PRODUCTINVENTORY A JOIN HASPRODUCTINVENTORY B ON A.PRODUCTID = B.PRODUCTID AND A.BATCHID = B.BATCHID WHERE B.STOREID = %s";
 			
-			sqlSelect = String.format(sql, storeID);
+			sqlSelect = String.format(sql, "'"+storeID+"'");
             }
             catch(Throwable oops) {
               System.out.print("Incorrect format for Store Id");
             }
 			
 			
-			result = statement.executeQuery(sqlSelect);
-			System.out.println("***************************************************************");
-			System.out.println("| STOREID\t|\tPRODUCTID\t|\tQUANTITYINSTOCK |");
-			System.out.println("***************************************************************");
-        while (result.next()) {
-            String STOREID = result.getString("STOREID");
-            String PRODUCTID = result.getString("PRODUCTID");
-            float QUANTITYINSTOCK = result.getFloat("QUANTITYINSTOCK");
-            
-            
-            System.out.println("| "+STOREID + "\t|\t" + PRODUCTID+ "\t\t|\t" + QUANTITYINSTOCK + "\t |");
-        }
-			System.out.println("***************************************************************");
-			
-			if(!statement.execute(sqlSelect)) {
-			System.out.println("Incorrect storeID");
-			//DBManager.rollbackTransaction();
-			return;
-			}
+    			result = statement.executeQuery(sqlSelect);
+          if(result.next()) {
+              result.beforeFirst();
+        			System.out.println("******************************************************************");
+        			System.out.println("| STOREID\t|\tPRODUCTID\t|\tQUANTITYINSTOCK  |");
+        			System.out.println("******************************************************************");
+              while (result.next()) {
+                  String STOREID = result.getString("STOREID");
+                  String PRODUCTID = result.getString("PRODUCTID");
+                  int QUANTITYINSTOCK = result.getInt("QUANTITYINSTOCK");
+                  System.out.println("| "+STOREID + "\t\t|\t" + PRODUCTID+ "\t\t|\t" + QUANTITYINSTOCK + "\t\t |");
+                  }
+    			    System.out.println("******************************************************************");
+			    }
+         else{
+          System.out.println("No results!");
+          }
+               
+  			if(!statement.execute(sqlSelect)) {
+  			System.out.println("Incorrect storeID");
+  		  return;
+  			}
 								
 			
             } finally {
