@@ -1,31 +1,16 @@
 import java.sql.*;
 import java.util.Scanner;
 import java.util.InputMismatchException;
-<<<<<<< HEAD
-=======
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
 
 public class addNewInventory {
 
 
 
-<<<<<<< HEAD
-private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; 
-
-
-private static final String user = "pattri";
-private static final String password = "200226336";
-
-public static void main(String[] args) {
-try {
-// Loading the driver. This creates an instance of the driver
-// and calls the registerDriver method to make MySql(MariaDB) Thin available to clients.
-=======
 private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/upnadupa"; 
 
 
@@ -34,18 +19,13 @@ private static final String password = "Momos";
 
 public static void main(String[] args) {
 try {
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
 
 
 Class.forName("org.mariadb.jdbc.Driver");
 
             Connection connection = null;
             Statement statement = null;
-<<<<<<< HEAD
-            ResultSet result = null;
-=======
            
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
             
 			String productName = null;
 			String productID = null;
@@ -83,27 +63,13 @@ Class.forName("org.mariadb.jdbc.Driver");
         			
 					System.out.print("Enter Price:"); 
         			price = sc.nextInt();
-<<<<<<< HEAD
-=======
 					sc.nextLine();
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
 					
 					System.out.print("Enter batch ID:"); 
         			batchID = sc.nextLine();
 					
         			System.out.print("Enter Quantity:"); 
         			quantity = sc.nextInt();
-<<<<<<< HEAD
-					
-					System.out.print("Enter Production Date (in YYYY-MM-DD format): ");
-        			String productionDate = sc.nextLine();
-					
-					System.out.print("Enter Supply Date (in YYYY-MM-DD format): ");
-        			String suppliedDate = sc.nextLine();
-					
-  				    System.out.print("Enter Experation Date (in YYYY-MM-DD format): ");
-        			String experationDate = sc.nextLine();
-=======
 					sc.nextLine();
 					
 					System.out.print("Enter Production Date (in YYYY-MM-DD format): ");
@@ -114,7 +80,6 @@ Class.forName("org.mariadb.jdbc.Driver");
 					
   				    System.out.print("Enter Experation Date (in YYYY-MM-DD format): ");
         			experationDate = sc.nextLine();
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
 					
 					System.out.print("Enter Transaction ID:"); 
         			transactionID = sc.nextLine();
@@ -127,16 +92,6 @@ Class.forName("org.mariadb.jdbc.Driver");
 					sqlSelect1 = String.format(sql, "'"+productID+"'", "'"+batchID+"'","'"+quantity+"'","'"+productName+"'","'"+price+"'");
 					
 					
-<<<<<<< HEAD
-					String sql = "INSERT INTO MAINTAINS VALUES('STOCKS',%s,%s)";
-					sqlSelect2 = String.format(sql, "'"+staffID+"'", "'"+productID+"'");
-					 
-					
-					String sql = "INSERT INTO SUPPLIEDPRODUCTS VALUES(%s,%s,%s,%s,%s,%s,%s,%s)";
-					sqlSelect3 = String.format(sql, "'"+transactionID+"'","'"+storeID+"'", "'"+productID+"'","'"+quantity+"'" "'"+suppliedDate+"'", "'"+productionDate+"'", "'"+experationDate+"'", "'"+batchID+"'");
-					
-					String sql = "INSERT INTO STOCKS VALUES(%s,%s,%s,%s)";
-=======
 					sql = "INSERT INTO MAINTAINS VALUES('STOCKS',%s,%s,%s)";
 					sqlSelect2 = String.format(sql, "'"+staffID+"'", "'"+productID+"'",, "'"+batchID+"'");
 					 
@@ -145,7 +100,6 @@ Class.forName("org.mariadb.jdbc.Driver");
 					sqlSelect3 = String.format(sql, "'"+transactionID+"'","'"+storeID+"'", "'"+productID+"'","'"+quantity+"'", "'"+suppliedDate+"'", "'"+productionDate+"'", "'"+experationDate+"'", "'"+batchID+"'");
 					
 					sql = "INSERT INTO STOCKS VALUES(%s,%s,%s,%s)";
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
 					sqlSelect4 = String.format(sql, "'"+staffID+"'", "'"+productID+"'", "'"+transactionID+"'", "'"+batchID+"'");
 					
 					
@@ -167,11 +121,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 				}	
 				System.out.println("*************************************************");
 			}finally {
-<<<<<<< HEAD
-                close(result);                  
-=======
                            
->>>>>>> f4f81e8508d9b2aeb0c39a2dff83977ef60dc6e8
                 close(statement);
                 close(connection);
                 
