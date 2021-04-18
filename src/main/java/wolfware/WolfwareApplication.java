@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -52,13 +54,21 @@ public class WolfwareApplication {
             // DriverManager list that recognizes the URL jdbcURL
             connection = DriverManager.getConnection(jdbcURL, user, password);
 
-            //clearDatabase(connection);
-            //createTables(connection);
+            SetupDatabaseForDemo.clearDatabase(connection);
+            SetupDatabaseForDemo.createTables(connection);
 
         } catch(Throwable oops) {
             oops.printStackTrace();
         } finally {
-            //close(connection);
+            close(connection);
+        }
+    }
+
+    static void close(Connection connection) {
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch(Throwable whatever) {}
         }
     }
 }

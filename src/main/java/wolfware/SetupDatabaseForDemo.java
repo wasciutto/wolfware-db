@@ -6,35 +6,10 @@ import java.sql.*;
 	Setups up the Wolfware Warehouse Database and populates with sample data.
 */
 public class SetupDatabaseForDemo {
-	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri";
 
-	private static final String user = "pattri";
-	private static final String password = "200226336";
+	protected static void createTables(Connection connection) throws SQLException {
 
-	public static void main(String[] args) {
-		Connection connection = null;
-    
-    try {
-			// Loading the driver. This creates an instance of the driver
-			// and calls the registerDriver method to make MySql(MariaDB) Thin available to clients.
-			Class.forName("org.mariadb.jdbc.Driver");
-			
-			// Get a connection instance from the first driver in the
-			// DriverManager list that recognizes the URL jdbcURL
-			connection = DriverManager.getConnection(jdbcURL, user, password);
-
-      //clearDatabase(connection);
-			createTables(connection);			
-			
-		} catch(Throwable oops) {
-				oops.printStackTrace();
-		} finally {
-			close(connection);
-		}
-	}
-	
-	private static void createTables(Connection connection) throws SQLException {
-		Statement statement = null;
+	Statement statement = null;
     
     try {
 			statement = connection.createStatement();
@@ -156,18 +131,13 @@ public class SetupDatabaseForDemo {
 			statement.executeUpdate("INSERT INTO SUPPLY VALUES ('4001', 'TRN000000003')");
 			statement.executeUpdate("INSERT INTO SUPPLY VALUES ('4002', 'TRN000000004')");
 			statement.executeUpdate("INSERT INTO SUPPLY VALUES ('4002', 'TRN000000005')");
-			
-			  
-			  
 
 			// Create the MAINTAINS table
 			statement.executeUpdate("CREATE TABLE MAINTAINS (ACTIONTYPE VARCHAR(32),STAFFID CHAR(10),PRODUCTID CHAR(10), BATCHID CHAR(10),PRIMARY KEY (STAFFID,PRODUCTID,BATCHID),FOREIGN KEY (STAFFID) REFERENCES STAFF(STAFFID) ON UPDATE CASCADE,FOREIGN KEY (PRODUCTID) REFERENCES PRODUCTINVENTORY(PRODUCTID) ON UPDATE CASCADE)");
 			
 			// NO RECORDS SEPCIFIED FOR TRANSFER/RETURN in DEMO DATA
 			//statement.executeUpdate("INSERT INTO MAINTAINS VALUES ('Return', '1001', '3001','BTC001')");
-			
-			
-			
+
 			// Create the STOCKS table 
 			statement.executeUpdate("CREATE TABLE STOCKS (STAFFID CHAR(7),PRODUCTID CHAR(10), BATCHID CHAR(10), TRANSACTIONID CHAR(12),PRIMARY KEY(STAFFID, PRODUCTID, BATCHID, TRANSACTIONID),FOREIGN KEY (STAFFID) REFERENCES STAFF(STAFFID) ON UPDATE CASCADE,FOREIGN KEY (PRODUCTID) REFERENCES PRODUCTINVENTORY(PRODUCTID) ON UPDATE CASCADE,FOREIGN KEY (TRANSACTIONID) REFERENCES SUPPLIEDPRODUCTS(TRANSACTIONID) ON UPDATE CASCADE)");
 			
@@ -218,7 +188,7 @@ public class SetupDatabaseForDemo {
 		
 	}
  
-  private static void clearDatabase(Connection connection) {
+  protected static void clearDatabase(Connection connection) {
     String[] tableNames = new String[] {
 		"DISCOUNT",
 		"HASDISCOUNT",
@@ -265,20 +235,12 @@ public class SetupDatabaseForDemo {
 	}
   }
 	
-	static void close(Connection connection) {
-		if(connection != null) {
-			try {
-			connection.close();
-			} catch(Throwable whatever) {}
-		}
-	}
-	
-	static void close(Statement statement) {
-		if(statement != null) {
-			try {
-			statement.close();
-			} catch(Throwable whatever) {}
-		}
-	}
+  private static void close(Statement statement) {
+	  if(statement != null) {
+		  try {
+			  statement.close();
+		  } catch(Throwable whatever) {}
+	  }
+  }
 }
 
