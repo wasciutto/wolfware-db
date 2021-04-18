@@ -1,3 +1,5 @@
+package wolfware;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +25,7 @@ public class WolfwareApplication {
         ClassLoader classLoader = WolfwareApplication.class.getClassLoader();
 
         URL res = Objects.requireNonNull(classLoader.getResource(configFileName),
-                "Can't find configuration file app.config");
+                "Can't find configuration file " + configFileName);
 
         InputStream is = new FileInputStream(res.getFile());
 
