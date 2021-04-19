@@ -50,15 +50,15 @@ public class generateBill {
                     sqlSupplierBill = "INSERT INTO SUPPLIERBILLS(BILLID, BILLAMOUNT, BILLPAID,BATCHID) " +
                             "VALUES(%s,(SELECT (BUYQUANTITY*BUYPRICE)FROM SUPPLIEDPRODUCTS WHERE " +
                             "TRANSACTIONID=%s),FALSE,(SELECT BATCHID FROM SUPPLIEDPRODUCTS " +
-                            "WHERE TRANSACTIONID=%s));"
+                            "WHERE TRANSACTIONID=%s));";
 
-                    sqlManagesSupplier = "INSERT INTO MANAGESSUPPLIERBILLS VALUES (%s, %s, %s);"
+                    sqlManagesSupplier = "INSERT INTO MANAGESSUPPLIERBILLS VALUES (%s, %s, %s);";
 
                     sqlInsertSupplierBillFormatted = String.format(sqlSupplierBill, "'" + billID + "'", "'" + suppliedProductTransactionID + "'");
                     sqlManagesSupplierFormatted = String.format(sqlManagesSupplier, "'" + billID + "'", "'" + supplierID + "'", "'" + staffID + "'");
 
                 } catch (Throwable oops) {
-                    System.out.print(oops)
+                    System.out.print(oops);
                     System.out.print("Incorrect format for billID, suppliedProductTransactionID, staffID, or supplierID");
                 }
                 try{
@@ -74,7 +74,7 @@ public class generateBill {
                 }
                 catch (Exception e) {
                     connection.rollback();
-                    System.out.println(e)
+                    System.out.println(e);
                     System.out.println("Bill failed to generate");
                     return;
                 }
