@@ -106,7 +106,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 						
 						System.out.print("Product id: "+pid);
 						System.out.print("Batch id: "+bid);
-						System.out.print("Store id: "+sid);
+						System.out.println("Store id: "+sid);
 					}
 					}catch(Exception e){
 					System.out.println("error in printing the modified changes");}
