@@ -54,7 +54,7 @@ public class generateBill {
 
                     sqlManagesSupplier = "INSERT INTO MANAGESSUPPLIERBILLS VALUES (%s, %s, %s);";
 
-                    sqlInsertSupplierBillFormatted = String.format(sqlSupplierBill, "'" + billID + "'", "'" + suppliedProductTransactionID + "'");
+                    sqlInsertSupplierBillFormatted = String.format(sqlSupplierBill, "'" + billID + "'", "'" + suppliedProductTransactionID + "'", "'" + suppliedProductTransactionID + "'");
                     sqlManagesSupplierFormatted = String.format(sqlManagesSupplier, "'" + billID + "'", "'" + supplierID + "'", "'" + staffID + "'");
 
                 } catch (Throwable oops) {
