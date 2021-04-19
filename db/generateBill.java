@@ -14,10 +14,21 @@ public class generateBill {
 
             Connection connection = null;
             Statement statement = null;
-            ResultSet result = null;
-            String storeID = null;
-            int year = 2020;
-            String sqlSelect = null;
+
+            String billID = null;
+            String suppliedProductTransactionID = null;
+            String staffID = null;
+            String supplierID = null;
+
+            String sqlSupplierBill = null;
+            String sqlManagesSupplier = null;
+
+            String sqlInsertSupplierBillFormatted = null;
+            String sqlManagesSupplierFormatted = null;
+
+            ResultSet resultSupplierBill = null;
+            ResultSet resultManagesSupplier = null;
+
             Scanner sc = new Scanner(System.in);
             try {
                 connection = DriverManager.getConnection(jdbcURL, user, password);
@@ -25,29 +36,51 @@ public class generateBill {
 
                 try {
                     System.out.print("Enter Bill ID: ");
-                    String billID = sc.nextLine();
+                    billID = sc.nextLine();
 
                     System.out.print("Enter suppliedProductTransactionID: ");
-                    String suppliedProductTransactionID = sc.nextLine();
+                    suppliedProductTransactionID = sc.nextLine();
 
-                    String sql = "INSERT INTO SUPPLIERBILLS(BILLID, BILLAMOUNT, BILLPAID,BATCHID) " +
+                    System.out.print("Enter staffID: ");
+                    staffID = sc.nextLine();
+
+                    System.out.print("Enter supplierID: ");
+                    supplierID = sc.nextLine();
+
+                    String sqlSupplierBill = "INSERT INTO SUPPLIERBILLS(BILLID, BILLAMOUNT, BILLPAID,BATCHID) " +
                             "VALUES(%s,(SELECT (BUYQUANTITY*BUYPRICE)FROM SUPPLIEDPRODUCTS WHERE " +
                             "TRANSACTIONID=%s),FALSE,(SELECT BATCHID FROM SUPPLIEDPRODUCTS " +
                             "WHERE TRANSACTIONID=%s));"
 
-                    sqlInsert = String.format(sql, "'" + billID + "'", "'" + suppliedProductTransactionID + "'");
+                    sqlManagesSupplier = "INSERT INTO MANAGESSUPPLIERBILLS VALUES (%s, %s, %s);"
+
+                    sqlInsertSupplierBillFormatted = String.format(sql, "'" + billID + "'", "'" + suppliedProductTransactionID + "'");
+                    sqlManagesSupplierFormatted = String.format(sql, "'" + billID + "'", "'" + supplierID + "'", "'" + staffID + "'");
+
                 } catch (Throwable oops) {
-                    System.out.print("Incorrect format for billID or suppliedProductTransactionID");
+                    System.out.print(oops)
+                    System.out.print("Incorrect format for billID, suppliedProductTransactionID, staffID, or supplierID");
                 }
+                try{
+                    connection.setAutoCommit(false);
 
-                result = statement.executeQuery(sqlInsert);
+                    resultSupplierBill = statement.executeQuery(sqlInsertSupplierBillFormatted);
+                    resultManagesSupplier = statement.executeQuery(sqlManagesSupplierFormatted);
 
-                if (!statement.execute(sqlSelect)) {
-                    System.out.println("Incorrect billID or suppliedProductTransactionID");
+                    connection.commit();
+                    System.out.println("Bill generated");
+
+                    return;
+                }
+                catch (Exception e) {
+                    connection.rollback();
+                    System.out.println(e)
+                    System.out.println("Bill failed to generate");
                     return;
                 }
             } finally {
-                close(result);
+                close(resultSupplierBill);
+                close(resultManagesSupplier);
                 close(statement);
                 close(connection);
             }
