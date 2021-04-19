@@ -79,10 +79,10 @@ Class.forName("org.mariadb.jdbc.Driver");
 				statement.executeQuery(sqlSelect3);
 				statement.executeQuery(sqlSelect4);
 				connection.commit();
-				System.out.println("Added new inventory  Executed");
+				System.out.println("Product was transfer is complete. :) ");
 				}catch (Exception e){
 				connection.rollback();
-				System.out.println("Product not added to inventory");
+				System.out.println("Product transfer between stores failed.");
 				}	
 				System.out.println("*************************************************");
 			}finally {

@@ -7,15 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class addNewInventory {
+public class addReturnstoInventory {
 
 
 
-private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; 
+private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/upnadupa"; 
 
 
-private static final String user = "pattri";
-private static final String password = "200226336";
+private static final String user = "upnadupa";
+private static final String password = "Momos";
 
 public static void main(String[] args) {
 try {
@@ -29,7 +29,6 @@ Class.forName("org.mariadb.jdbc.Driver");
 			String productID = null;
 			String batchID = null;
 			int quantity = 0;
-			int price = 0;
 			String transactionID = null;
 			String suppliedDate = null;
 			String productionDate = null;
@@ -62,7 +61,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 					sc.nextLine();
 					
 					String sql = "UPDATE PRODUCTINVENTORY SET QUANTITYINSTOCK = QUANTITYINSTOCK + %s WHERE PRODUCTID=%s AND BATCHID=%s";
-					sqlSelect1 = String.format(sql,"'"+quantity+"'", "'"+productID+"'", "'"+batchID+"'");
+					sqlSelect1 = String.format(sql, quantity, "'"+productID+"'", "'"+batchID+"'");
 					
 					sql = "INSERT INTO MAINTAINS VALUES('Returns',%s,%s,%s)";
 					sqlSelect2 = String.format(sql, "'"+staffID+"'", "'"+productID+"'", "'"+batchID+"'");
@@ -76,10 +75,10 @@ Class.forName("org.mariadb.jdbc.Driver");
 				statement.executeQuery(sqlSelect1);
 				statement.executeQuery(sqlSelect2);
 				connection.commit();
-				System.out.println("Product returned to inventory.");
+				System.out.println("Product returned to inventory. Have a nice day!");
 				}catch (Exception e){
 				connection.rollback();
-				System.out.println("Product not returned to inventory");
+				System.out.println(" Sorry! Product not returned to inventory. Try again! ");
 				}	
 				System.out.println("*************************************************");
 			} finally {
