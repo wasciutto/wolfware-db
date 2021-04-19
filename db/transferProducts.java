@@ -84,7 +84,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 				connection.commit();
 				System.out.println("Product transfer is complete. :) ");
 				
-				}catch (Exception e){
+				}catch (Exception a){
 				//rolling back all the changes made to the database if an error or a failure occurs. 
 				connection.rollback();
 				System.out.println("Product transfer between stores failed.\n");
@@ -106,7 +106,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 						
 						System.out.print("Product id: "+pid);
 						System.out.print("Batch id: "+bid);
-						System.out.println("Store id: "+sid);
+						System.out.print("Store id: "+sid);
 					}
 					}catch(Exception e){
 					System.out.println("error in printing the modified changes");}
@@ -114,7 +114,7 @@ Class.forName("org.mariadb.jdbc.Driver");
 				System.out.println("*************************************************");
 			}finally {
 				//closing all resources
-                close (result)
+                close (result);
                 close(statement);
                 close(connection);
                 
