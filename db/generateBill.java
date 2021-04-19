@@ -35,7 +35,7 @@ public class generateBill {
                 statement = connection.createStatement();
 
                 try {
-                    System.out.print("Enter Bill ID: ");
+                    System.out.print("Enter billID: ");
                     billID = sc.nextLine();
 
                     System.out.print("Enter suppliedProductTransactionID: ");
@@ -47,15 +47,15 @@ public class generateBill {
                     System.out.print("Enter supplierID: ");
                     supplierID = sc.nextLine();
 
-                    String sqlSupplierBill = "INSERT INTO SUPPLIERBILLS(BILLID, BILLAMOUNT, BILLPAID,BATCHID) " +
+                    sqlSupplierBill = "INSERT INTO SUPPLIERBILLS(BILLID, BILLAMOUNT, BILLPAID,BATCHID) " +
                             "VALUES(%s,(SELECT (BUYQUANTITY*BUYPRICE)FROM SUPPLIEDPRODUCTS WHERE " +
                             "TRANSACTIONID=%s),FALSE,(SELECT BATCHID FROM SUPPLIEDPRODUCTS " +
                             "WHERE TRANSACTIONID=%s));"
 
                     sqlManagesSupplier = "INSERT INTO MANAGESSUPPLIERBILLS VALUES (%s, %s, %s);"
 
-                    sqlInsertSupplierBillFormatted = String.format(sql, "'" + billID + "'", "'" + suppliedProductTransactionID + "'");
-                    sqlManagesSupplierFormatted = String.format(sql, "'" + billID + "'", "'" + supplierID + "'", "'" + staffID + "'");
+                    sqlInsertSupplierBillFormatted = String.format(sqlSupplierBill, "'" + billID + "'", "'" + suppliedProductTransactionID + "'");
+                    sqlManagesSupplierFormatted = String.format(sqlManagesSupplier, "'" + billID + "'", "'" + supplierID + "'", "'" + staffID + "'");
 
                 } catch (Throwable oops) {
                     System.out.print(oops)
