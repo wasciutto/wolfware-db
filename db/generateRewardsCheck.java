@@ -37,12 +37,12 @@ public class generateRewardsCheck {
 
                     sqlMembership = "SELECT A.CUSTOMERID,B.MEMBERSHIPLEVEL, SUM(TOTALPRICE) AS TOTALPURCHASEAMOUNT , " +
                             "YEAR(PURCHASEDATE) AS YEAR FROM TRANSACTIONS A,CLUBMEMBERS B WHERE A.CUSTOMERID = B.CUSTOMERID AND " +
-                            "A.CUSTOMERID = %s AND YEAR(PURCHASEDATE) = %s GROUP BY CUSTOMERID;"
+                            "A.CUSTOMERID = %s AND YEAR(PURCHASEDATE) = %s GROUP BY CUSTOMERID;";
 
                     sqlMembershipFormatted = String.format(sql, "'" + customerID + "'", year);
 
                 } catch (Throwable oops) {
-                    System.out.print(oops)
+                    System.out.print(oops);
                     System.out.print("Incorrect format for billID, suppliedProductTransactionID, staffID, or supplierID");
                 }
                 try{
@@ -57,7 +57,7 @@ public class generateRewardsCheck {
                 }
                 catch (Exception e) {
                     connection.rollback();
-                    System.out.println(e)
+                    System.out.println(e);
                     System.out.println("Rewards check failed to generate");
                     return;
                 }
