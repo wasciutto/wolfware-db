@@ -14,8 +14,8 @@ public class deleteInventory {
 private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri"; 
 
 
-private static final String user = "pattri";
-private static final String password = "200226336";
+private static final String user = "upnadupa";
+private static final String password = "Momos";
 
 public static void main(String[] args) {
 try {
