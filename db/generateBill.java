@@ -26,9 +26,6 @@ public class generateBill {
             String sqlInsertSupplierBillFormatted = null;
             String sqlManagesSupplierFormatted = null;
 
-            ResultSet resultSupplierBill = null;
-            ResultSet resultManagesSupplier = null;
-
             Scanner sc = new Scanner(System.in);
             try {
                 connection = DriverManager.getConnection(jdbcURL, user, password);
@@ -64,8 +61,8 @@ public class generateBill {
                 try{
                     connection.setAutoCommit(false);
 
-                    resultSupplierBill = statement.executeQuery(sqlInsertSupplierBillFormatted);
-                    resultManagesSupplier = statement.executeQuery(sqlManagesSupplierFormatted);
+                    statement.executeQuery(sqlInsertSupplierBillFormatted);
+                    statement.executeQuery(sqlManagesSupplierFormatted);
 
                     connection.commit();
                     System.out.println("Bill generated");
@@ -79,8 +76,6 @@ public class generateBill {
                     return;
                 }
             } finally {
-                close(resultSupplierBill);
-                close(resultManagesSupplier);
                 close(statement);
                 close(connection);
             }

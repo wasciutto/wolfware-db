@@ -17,9 +17,23 @@ public class generateRewardsCheck {
 
             String customerID = null;
             String year = null;
+            String billID = null;
+            String staffID = null;
 
-            String sqlMembership = null;
+            String CUSTOMERID = null;
+            String MEMBERHSIPLEVEL = null;
+            double TOTALPURCHASEAMOUNT = null;
+            int YEAR = null;
+
+            String sqlMembership = "SELECT A.CUSTOMERID,B.MEMBERSHIPLEVEL, SUM(TOTALPRICE) AS TOTALPURCHASEAMOUNT , " +
+                    "YEAR(PURCHASEDATE) AS YEAR FROM TRANSACTIONS A,CLUBMEMBERS B WHERE A.CUSTOMERID = B.CUSTOMERID AND " +
+                    "A.CUSTOMERID = '%s' AND YEAR(PURCHASEDATE) = '%s' GROUP BY CUSTOMERID;";
+            String sqlRewardsMembershipInsert =  "INSERT INTO CUSTOMERREWARDS VALUES ('%s', %f, '1');";
+            String sqlManageCustomerRewardsInsert = "INSERT INTO MANAGESCUSTOMERREWARDS VALUES ('%s','%s','%s');";
+
             String sqlMembershipFormatted = null;
+            String sqlRewardsMembershipInsertFormatted = null;
+            String sqlManageCustomerRewardsInsertFormatted = null;
 
             ResultSet result = null;
 
@@ -35,20 +49,41 @@ public class generateRewardsCheck {
                     System.out.print("Enter Year (YYYY): ");
                     year = sc.nextLine();
 
-                    sqlMembership = "SELECT A.CUSTOMERID,B.MEMBERSHIPLEVEL, SUM(TOTALPRICE) AS TOTALPURCHASEAMOUNT , " +
-                            "YEAR(PURCHASEDATE) AS YEAR FROM TRANSACTIONS A,CLUBMEMBERS B WHERE A.CUSTOMERID = B.CUSTOMERID AND " +
-                            "A.CUSTOMERID = %s AND YEAR(PURCHASEDATE) = %s GROUP BY CUSTOMERID;";
-
-                    sqlMembershipFormatted = String.format(sql, "'" + customerID + "'", year);
+                    sqlMembershipFormatted = String.format(sql, customerID, year);
 
                 } catch (Throwable oops) {
                     System.out.print(oops);
-                    System.out.print("Incorrect format for billID, suppliedProductTransactionID, staffID, or supplierID");
                 }
                 try{
                     connection.setAutoCommit(false);
 
                     result = statement.executeQuery(sqlFormatted);
+
+                    while (result.next()) {
+                        CUSTOMERID = result.getString("CUSTOMERID");
+                        MEMBERHSIPLEVEL = result.getString("MEMBERHSIPLEVEL");
+                        TOTALPURCHASEAMOUNT = result.getString("TOTALPURCHASEAMOUNT");
+                        YEAR = result.getString("YEAR");
+                    }
+
+                    double twoPercentPurchaseAmount = .02 * TOTALPURCHASEAMOUNT;
+
+                    try {
+                        System.out.print("Enter Bill ID: ");
+                        billID = sc.nextLine();
+
+                        System.out.print("Enter Staff ID: ");
+                        staffID = sc.nextLine();
+
+                    } catch (Throwable oops) {
+                        System.out.print(oops);
+                    }
+
+                    sqlRewardsMembershipInsertFormatted = String.format(sqlRewardsMembershipInsert, billID, twoPercentPurchaseAmount);
+                    sqlManageCustomerRewardsInsertFormatted = String.format(sqlManageCustomerRewardsInsert, billID, customerID, staffID);
+
+                    statement.executeQuery(sqlRewardsMembershipInsertFormatted);
+                    statement.executeQuery(sqlManageCustomerRewardsInsertFormatted);
 
                     connection.commit();
                     System.out.println("Rewards check generated");
