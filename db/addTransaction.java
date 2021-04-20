@@ -20,6 +20,7 @@ public class addTransaction {
             String cashierID = null;
             String purchaseDate = null;
 
+            String transactionItemId = null;
             String productID = null;
             String quantitySold = null;
             String totalSoldPrice = null;
