@@ -98,10 +98,22 @@ public class addTransaction {
 
                     Statement transactionItemStatement = connection.createStatement();
 
+                    //generate a random value to use as transaction item id
                     Random r = new Random();
                     int nextTransactionItemId = r.nextInt(100000);
                     System.out.println("Generated transaction item id: TRNT" + nextTransactionItemId);
 
+                    //setup the discount SQL
+                    String sqlDiscount = "SELECT MARKETPRICE-(SELECT A.VALUE FROM DISCOUNT A, HASDISCOUNT B WHERE A.DISCOUNTID = " +
+                            "B.DISCOUNTID AND A.STARTDATE < '%s' AND A.ENDDATE > '%s' AND B.PRODUCTID = " +
+                            "'%s') FROM PRODUCTINVENTORY WHERE PRODUCTID = '%s';";
+                    String sqlDiscountFormatted = null;
+
+                    //setup discount result
+                    ResultSet discountResult = null;
+                    double DISCOUNTVALUE = 0;
+
+                    //loop through with a user prompt to gather each transaction item to add
                     do {
                         try {
                             System.out.print("Enter Product ID: ");
@@ -118,10 +130,19 @@ public class addTransaction {
 
                             sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
+                            sqlDiscountFormatted = String.format(sqlDiscount, purchaseDate, purchaseDate, productID);
+
+
                             try {
                                 connection.setAutoCommit(false);
 
                                 statement.executeQuery(sqlTransactionItemFormatted);
+
+                                discountResult = statement.executeQuery(sqlDiscountFormatted);
+
+                                while (discountResult.next()) {
+                                    DISCOUNTVALUE = discountResult.getDouble(1);
+                                }
 
                                 connection.commit();
 
