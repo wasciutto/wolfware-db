@@ -96,33 +96,8 @@ public class addTransaction {
                     String quit = null;
 
                     Statement transactionItemStatement = connection.createStatement();
-                    ResultSet transactionItemIDresult = null;
 
-                    int nextTransactionItemId = 0;
-                    String sqlTransactionItemCount = null;
-                    int rowsItem = 0;
-
-                    //Generate next TRANSACTION ITEM ID
-                    try {
-                        //sql query for getting all the data from TRANSACTION ITEM ID
-                        sqlTransactionItemCount = "SELECT * FROM TRANSACTIONITEMS";
-                        try {
-                            transactionItemIDresult = transactionItemStatement.executeQuery(sqlTransactionItemCount);
-                            //going to the last row and checking its row number to generate next transaction item number.
-                            transactionItemIDresult.last();
-                            rowsItem = transactionIDresult.getRow();
-                        } catch (Exception e) {
-                            System.out.println(e);
-                        }
-
-                        nextTransactionItemId = rowsItem + 1;
-                        System.out.println("Transaction Item ID generated: " + nextTransactionItemId);
-
-                    } catch (Exception e) {
-                        System.out.println("Transaction Number could not be generated. Please try again. ");
-                    } finally {
-                        close(transactionIDresult);
-                    }
+                    int nextTransactionItemId = "TRNT" + Random.nextInt(100000);
 
                     do {
                         try {
