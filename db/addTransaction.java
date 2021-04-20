@@ -122,7 +122,7 @@ public class addTransaction {
                             } catch (Exception e) {
                                 System.out.println("Transaction Number could not be generated. Please try again. ");
                             } finally {
-                                close(transactionIDresult);
+                                close(transactionItemIDresult);
                             }
 
                             System.out.print("Enter Product ID: ");
