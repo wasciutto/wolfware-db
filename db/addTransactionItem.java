@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class addTransaction {
+public class addTransactionItem {
 
     private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri";
 
@@ -16,22 +16,14 @@ public class addTransaction {
             Statement statement = null;
 
             String transactionId = null;
+            String transactionItemId = null;
             String productID = null;
             String quantitySold = null;
-            String totalPrice = null;
-            String storeID = null;
-            String customerID = null;
-            String cashierID = null;
-            String purchaseDate = null;
-            String totalPrice = null;
+            String totalSoldPrice = null;
 
-            String sql2 = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%s','%s');";
-            String sql3 = "UPDATE TRANSACTIONS SET TOTALPRICE = (SELECT SUM(TOTALSOLDPRICE) " +
-                    "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
+            String sql = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%s','%s');";
 
-            String sql1Formatted = null;
-
-            ResultSet result = null;
+            String sqlFormatted = null;
 
             Scanner sc = new Scanner(System.in);
             try {
@@ -42,6 +34,9 @@ public class addTransaction {
                     System.out.print("Enter Transaction ID: ");
                     transactionId = sc.nextLine();
 
+                    System.out.print("Enter Transaction Item ID: ");
+                    transactionItemId = sc.nextLine();
+
                     System.out.print("Enter Product ID: ");
                     productID = sc.nextLine();
 
@@ -49,24 +44,9 @@ public class addTransaction {
                     quantitySold = sc.nextLine();
 
                     System.out.print("Enter Total Price: ");
-                    totalPrice = sc.nextLine();
+                    totalSoldPrice = sc.nextLine();
 
-                    System.out.print("Enter Store ID: ");
-                    storeID = sc.nextLine();
-
-                    System.out.print("Enter Customer ID: ");
-                    customerID = sc.nextLine();
-
-                    System.out.print("Enter Cashier ID: ");
-                    cashierID = sc.nextLine();
-
-                    System.out.print("Enter Purchase Date (YYYY-MM-DD): ");
-                    purchaseDate = sc.nextLine();
-
-                    System.out.println("Enter Total Price: ");
-                    totalPrice = sc.nextLine();
-
-                    sql1Formatted = String.format(sql, transactionId, customerID, date);
+                    sqlFormatted = String.format(sql, transactionId, transactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
                 } catch (Throwable oops) {
                     System.out.print(oops);
@@ -74,28 +54,21 @@ public class addTransaction {
                 try{
                     connection.setAutoCommit(false);
 
-                    result = statement.executeQuery(sqlFormatted);
-
-                    while (result.next()) {
-                        DISCOUNTID = result.getString("DISCOUNTID");
-                    }
+                    statement.executeQuery(sqlFormatted);
 
                     connection.commit();
-                    if(DISCOUNTID != null) {
-                        System.out.println("true");
-                    } else {
-                        System.out.println("false");
-                    }
+
+                    System.out.println("Added Transaction Item");
 
                     return;
                 }
                 catch (Exception e) {
+                    System.out.println("Failed to Add Transaction Item");
                     connection.rollback();
                     System.out.println(e);
                     return;
                 }
             } finally {
-                close(result);
                 close(statement);
                 close(connection);
             }

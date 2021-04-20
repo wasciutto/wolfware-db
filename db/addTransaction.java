@@ -24,8 +24,6 @@ public class addTransaction {
 
             String sqlFormatted = null;
 
-            ResultSet result = null;
-
             Scanner sc = new Scanner(System.in);
             try {
                 connection = DriverManager.getConnection(jdbcURL, user, password);
@@ -68,7 +66,6 @@ public class addTransaction {
                     return;
                 }
             } finally {
-                close(result);
                 close(statement);
                 close(connection);
             }
