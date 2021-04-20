@@ -118,11 +118,10 @@ public class addTransaction {
                                 nextTransactionItemId = rowsItem + 1;
                                 System.out.println("Transaction Item ID generated: " + nextTransactionItemId);
 
-                                close(transactionIDresult);
-
-
                             } catch (Exception e) {
                                 System.out.println("Transaction Number could not be generated. Please try again. ");
+                            } finally {
+                                close(transactionIDresult);
                             }
 
                             System.out.print("Enter Product ID: ");
@@ -183,6 +182,7 @@ public class addTransaction {
             try {
                 connection.close();
             } catch (Throwable whatever) {
+                System.out.println(whatever);
             }
         }
     }
@@ -192,6 +192,7 @@ public class addTransaction {
             try {
                 statement.close();
             } catch (Throwable whatever) {
+                System.out.println(whatever);
             }
         }
     }
@@ -201,6 +202,7 @@ public class addTransaction {
             try {
                 result.close();
             } catch (Throwable whatever) {
+                System.out.println(whatever);
             }
         }
     }
