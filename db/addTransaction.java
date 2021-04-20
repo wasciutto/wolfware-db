@@ -104,9 +104,9 @@ public class addTransaction {
                     System.out.println("Generated transaction item id: TRNT" + nextTransactionItemId);
 
                     //setup the discount SQL
-                    String sqlDiscount = "SELECT MARKETPRICE-(SELECT A.VALUE FROM DISCOUNT A, HASDISCOUNT B WHERE A.DISCOUNTID = " +
+                    String sqlDiscount = "SELECT MARKETPRICE-((SELECT A.VALUE FROM DISCOUNT A, HASDISCOUNT B WHERE A.DISCOUNTID = " +
                             "B.DISCOUNTID AND A.STARTDATE <= '%s' AND A.ENDDATE >= '%s' AND B.PRODUCTID = " +
-                            "'%s') FROM PRODUCTINVENTORY WHERE PRODUCTID = '%s';";
+                            "'%s') / 100 * MARKETPRICE) FROM PRODUCTINVENTORY WHERE PRODUCTID = '%s';";
                     String sqlDiscountFormatted = null;
 
                     //setup discount result
