@@ -140,7 +140,7 @@ public class addTransaction {
 
                                 discountResult = statement.executeQuery(sqlDiscountFormatted);
 
-                                DISCOUNTVALUE = discountResult.first().getDouble(1);
+                                DISCOUNTVALUE = discountResult.next().getDouble(1);
                                 System.out.println("" + DISCOUNTVALUE);
 
                                 connection.commit();
@@ -151,6 +151,8 @@ public class addTransaction {
                                 connection.rollback();
                                 System.out.println(e);
                                 return;
+                            } finally {
+                                close(discountResult);
                             }
                         } catch (Throwable oops) {
                             System.out.print(oops);
