@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class getDiscountedPrice {
+public class addTransaction {
 
     private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/pattri";
 
@@ -15,19 +15,22 @@ public class getDiscountedPrice {
             Connection connection = null;
             Statement statement = null;
 
+            String transactionId = null;
             String productID = null;
-            String date = null;
-            double DISCOUNTVALUE = null;
+            String quantitySold = null;
+            String totalPrice = null;
+            String storeID = null;
+            String customerID = null;
+            String cashierID = null;
+            String purchaseDate = null;
+            String totalPrice = null;
 
-            String sql = "SELECT MARKETPRICE-(SELECT A.VALUE FROM DISCOUNT A, HASDISCOUNT B WHERE A.DISCOUNTID = " +
-                    "B.DISCOUNTID AND A.STARTDATE < '%s' AND A.ENDDATE > '%s' AND B.PRODUCTID = " +
-                    "'%s') FROM PRODUCTINVENTORY WHERE PRODUCTID = '%s';";
+            String sql1 =  "INSERT INTO TRANSACTIONS VALUES('%s','%s','%s', '%s', 0);";
+            String sql2 = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%s','%s');";
+            String sql3 = "UPDATE TRANSACTIONS SET TOTALPRICE = (SELECT SUM(TOTALSOLDPRICE) " +
+                    "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
 
-            String sqlInRange = "MARKETPRICE-(SELECT A.VALUE FROM DISCOUNT A, HASDISCOUNT B WHERE A.DISCOUNTID = " +
-                    "B.DISCOUNTID AND A.STARTDATE < '%s' AND A.ENDDATE > '%s' AND B.PRODUCTID = '%s')";
-
-            String sqlFormatted = null;
-            String sqlInRangeFormatted = null;
+            String sql1Formatted = null;
 
             ResultSet result = null;
 
@@ -37,13 +40,34 @@ public class getDiscountedPrice {
                 statement = connection.createStatement();
 
                 try {
+                    System.out.print("Enter Transaction ID: ");
+                    transactionId = sc.nextLine();
+
                     System.out.print("Enter Product ID: ");
+                    productID = sc.nextLine();
+
+                    System.out.print("Enter Quantity Sold: ");
+                    quantitySold = sc.nextLine();
+
+                    System.out.print("Enter Total Price: ");
+                    totalPrice = sc.nextLine();
+
+                    System.out.print("Enter Store ID: ");
+                    storeID = sc.nextLine();
+
+                    System.out.print("Enter Customer ID: ");
                     customerID = sc.nextLine();
 
-                    System.out.print("Enter Purchase Date to Check (YYYY-MM-DD): ");
-                    date = sc.nextLine();
+                    System.out.print("Enter Cashier ID: ");
+                    cashierID = sc.nextLine();
 
-                    sqlFormatted = String.format(sql, date, date, productID);
+                    System.out.print("Enter Purchase Date (YYYY-MM-DD): ");
+                    purchaseDate = sc.nextLine();
+
+                    System.out.println("Enter Total Price: ");
+                    totalPrice = sc.nextLine();
+
+                    sql1Formatted = String.format(sql, transactionId, customerID, date);
 
                 } catch (Throwable oops) {
                     System.out.print(oops);
@@ -54,12 +78,16 @@ public class getDiscountedPrice {
                     result = statement.executeQuery(sqlFormatted);
 
                     while (result.next()) {
-                        DISCOUNTVALUE = result.getString(1);
+                        DISCOUNTID = result.getString("DISCOUNTID");
                     }
 
                     connection.commit();
+                    if(DISCOUNTID != null) {
+                        System.out.println("true");
+                    } else {
+                        System.out.println("false");
+                    }
 
-                    System.out.println(DISCOUNTVALUE);
                     return;
                 }
                 catch (Exception e) {
