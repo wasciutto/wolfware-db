@@ -43,6 +43,7 @@ public class generateRewardsCheck {
                 statement = connection.createStatement();
 
                 try {
+                    // Get the customer ID and year to see if the customer is platinum for that year
                     System.out.print("Enter Customer ID: ");
                     customerID = sc.nextLine();
 
@@ -59,6 +60,7 @@ public class generateRewardsCheck {
 
                     result = statement.executeQuery(sqlFormatted);
 
+                    // Retrieve the customer's record to check their membership
                     while (result.next()) {
                         CUSTOMERID = result.getString("CUSTOMERID");
                         MEMBERHSIPLEVEL = result.getString("MEMBERHSIPLEVEL");
@@ -66,8 +68,15 @@ public class generateRewardsCheck {
                         YEAR = result.getString("YEAR");
                     }
 
+                    // Check if the user's membership level is the right level - throw an exception otherwise
+                    if(!MEMBERHSIPLEVEL.equals("Platinum")) {
+                        throw new Exception("User is not platinum");
+                    }
+
+                    // Calculate 2% of the total purchase amount to refund to customer
                     double twoPercentPurchaseAmount = .02 * TOTALPURCHASEAMOUNT;
 
+                    // Now we gather the bill ID and staff ID to enter the rewards check
                     try {
                         System.out.print("Enter Bill ID: ");
                         billID = sc.nextLine();
@@ -79,6 +88,8 @@ public class generateRewardsCheck {
                         System.out.print(oops);
                     }
 
+                    // Create SQL insert statements to update CUSTOMERREWARDS and MANAGESCUSTOMERREWARDS with the
+                    // new rewards information
                     sqlRewardsMembershipInsertFormatted = String.format(sqlRewardsMembershipInsert, billID, twoPercentPurchaseAmount);
                     sqlManageCustomerRewardsInsertFormatted = String.format(sqlManageCustomerRewardsInsert, billID, customerID, staffID);
 
