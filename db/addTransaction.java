@@ -69,8 +69,6 @@ public class addTransaction {
 
                 // Gather Transaction details
                 try {
-                    System.out.print("TRANSACTION details");
-
                     System.out.print("Enter Customer ID: ");
                     customerID = sc.nextLine();
 
