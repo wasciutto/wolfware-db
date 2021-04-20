@@ -130,7 +130,7 @@ public class addTransaction {
 
                             sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
-                            sqlDiscountFormatted = String.format(sqlDiscount, purchaseDate, purchaseDate, productID);
+                            sqlDiscountFormatted = String.format(sqlDiscount, purchaseDate, purchaseDate, productID, productID);
 
 
                             try {
