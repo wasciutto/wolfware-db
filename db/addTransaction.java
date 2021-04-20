@@ -100,6 +100,7 @@ public class addTransaction {
 
                     Random r = new Random();
                     int nextTransactionItemId = r.nextInt(100000);
+                    System.out.println("Generated transaction item id: TRNT" + nextTransactionItemId)
 
                     do {
                         try {
@@ -115,7 +116,7 @@ public class addTransaction {
                             System.out.println("Press any key to enter new item or 'quit' to finish");
                             quit = sc.nextLine();
 
-                            sqlTransactionItemFormatted = String.format(sqlTransactionItem, "TRNT" + nextTransactionId, nextTransactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
+                            sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
                             try {
                                 connection.setAutoCommit(false);
