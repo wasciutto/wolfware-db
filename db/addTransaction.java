@@ -38,7 +38,6 @@ public class addTransaction {
             int rows = 0;
 
             ResultSet transactionIDresult = null;
-            ResultSet transactionItemIDresult = null;
 
             Scanner sc = new Scanner(System.in);
             try {
@@ -98,9 +97,35 @@ public class addTransaction {
 
                     String quit = null;
                     do {
+                        ResultSet transactionItemIDresult = null;
+
+                        int nextTransactionItemId = 0;
+                        String sqlTransactionItemCount = null;
+                        int rowsItem = 0;
+
                         try {
-                            System.out.print("Enter Transaction Item ID: ");
-                            transactionItemId = sc.nextLine();
+                            //Generate next TRANSACTION ITEM ID
+                            try {
+                                //sql query for getting all the data from TRANSACTION ITEM ID
+                                sqlTransactionItemCount = "SELECT * FROM TRANSACTIONITEMS";
+                                try {
+                                    transactionItemIDresult = statement.executeQuery(sqlTransactionItemCount);
+                                    //going to the last row and checking its row number to generate next transaction item number.
+                                    transactionItemIDresult.last();
+                                    rowsItem = transactionIDresult.getRow();
+                                } catch (Exception e) {
+                                    System.out.println("\n Transaction Item data could not be loaded. Please try again.");
+                                }
+
+                                nextTransactionItemId = rowsItem + 1;
+                                System.out.println(nextTransactionItemId);
+
+
+                            } catch (Exception e) {
+                                System.out.println("Transaction Number could not be generated. Please try again. ");
+                            } finally {
+                                close(transactionIDresult);
+                            }
 
                             System.out.print("Enter Product ID: ");
                             productID = sc.nextLine();
@@ -114,7 +139,7 @@ public class addTransaction {
                             System.out.println("Press any key to enter new item or 'quit' to finish");
                             quit = sc.nextLine();
 
-                            sqlTransactionItemFormatted = String.format(sqlTransactionItem, transactionId, transactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
+                            sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, nextTransactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
                             try {
                                 connection.setAutoCommit(false);
