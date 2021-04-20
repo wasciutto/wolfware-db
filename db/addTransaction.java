@@ -99,6 +99,7 @@ public class addTransaction {
                     ResultSet transactionItemIDresult = null;
 
                     do {
+                        transactionItemIDresult = null;
                         int nextTransactionItemId = 0;
                         String sqlTransactionItemCount = null;
                         int rowsItem = 0;
