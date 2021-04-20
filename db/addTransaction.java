@@ -58,7 +58,7 @@ public class addTransaction {
                     }
 
                     nextTransactionId = rows + 1;
-                    System.out.println(nextTransactionId);
+                    System.out.println("Transaction ID generated: " + nextTransactionId);
 
 
                 } catch (Exception e) {
@@ -116,7 +116,7 @@ public class addTransaction {
                                 }
 
                                 nextTransactionItemId = rowsItem + 1;
-                                System.out.println(nextTransactionItemId);
+                                System.out.println("Transaction Item ID generated: " + nextTransactionItemId);
 
 
                             } catch (Exception e) {
