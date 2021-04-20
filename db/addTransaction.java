@@ -20,11 +20,17 @@ public class addTransaction {
             String cashierID = null;
             String purchaseDate = null;
 
+            String productID = null;
+            String quantitySold = null;
+            String totalSoldPrice = null;
+
             // Add a new transaction - set total price to 0 for now until transaction items are added with the
             // update transaction API
             String sql =  "INSERT INTO TRANSACTIONS VALUES('%s','%s','%s', '%s', 0);";
-
             String sqlFormatted = null;
+
+            String sqlTransactionItem = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%d','%f');";
+            String sqlTransactionItemFormatted = null;
 
             Scanner sc = new Scanner(System.in);
             try {
@@ -32,6 +38,7 @@ public class addTransaction {
                 statement = connection.createStatement();
 
                 try {
+                    System.out.print("TRANSACTION details");
                     System.out.print("Enter Transaction ID: ");
                     transactionId = sc.nextLine();
 
@@ -43,7 +50,6 @@ public class addTransaction {
 
                     System.out.print("Enter Purchase Date (YYYY-MM-DD): ");
                     purchaseDate = sc.nextLine();
-
 
                     sqlFormatted = String.format(sql, transactionId, customerID, cashierID, purchaseDate);
 
@@ -58,6 +64,46 @@ public class addTransaction {
                     connection.commit();
 
                     System.out.println("Added Transaction");
+
+                    String quit = null;
+                    do {
+                        try {
+                            System.out.print("Enter Transaction Item ID: ");
+                            transactionItemId = sc.nextLine();
+
+                            System.out.print("Enter Product ID: ");
+                            productID = sc.nextLine();
+
+                            System.out.print("Enter Quantity Sold: ");
+                            quantitySold = sc.nextLine();
+
+                            System.out.print("Enter Total Price: ");
+                            totalSoldPrice = sc.nextLine();
+
+                            System.out.println("Press any key to enter new item or 'quit' to finish");
+                            quit = sc.nextLine();
+
+                            sqlTransactionItemFormatted = String.format(sql, transactionId, transactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
+
+                            try {
+                                connection.setAutoCommit(false);
+
+                                statement.executeQuery(sqlFormatted);
+
+                                connection.commit();
+                            } catch (Exception e) {
+                                System.out.println("Failed to Add Transaction Item");
+                                connection.rollback();
+                                System.out.println(e);
+                                return;
+                            }
+
+
+                        } catch (Throwable oops) {
+                            System.out.print(oops);
+                        }
+
+                    } while (!quit.equals("quit"));
 
                     return;
                 }
