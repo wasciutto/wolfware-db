@@ -54,7 +54,7 @@ public class addTransaction {
                         transactionIDresult.last();
                         rows = transactionIDresult.getRow();
                     } catch (Exception e) {
-                        System.out.println("\n Transaction data could not be loaded. Please try again.");
+                        System.out.println(e);
                     }
 
                     nextTransactionId = rows + 1;
@@ -112,7 +112,7 @@ public class addTransaction {
                                     transactionItemIDresult.last();
                                     rowsItem = transactionIDresult.getRow();
                                 } catch (Exception e) {
-                                    System.out.println("\n Transaction Item data could not be loaded. Please try again.");
+                                    System.out.println(e);
                                 }
 
                                 nextTransactionItemId = rowsItem + 1;
