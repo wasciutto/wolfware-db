@@ -100,7 +100,7 @@ public class addTransaction {
 
                     Random r = new Random();
                     int nextTransactionItemId = r.nextInt(100000);
-                    System.out.println("Generated transaction item id: TRNT" + nextTransactionItemId)
+                    System.out.println("Generated transaction item id: TRNT" + nextTransactionItemId);
 
                     do {
                         try {
