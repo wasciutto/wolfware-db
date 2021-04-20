@@ -162,6 +162,7 @@ public class addTransaction {
 
                     } while (!quit.equals("quit"));
 
+                    Statement statement2 = connection.createStatement();
 
                     String sqlTotalPrice =  "UPDATE TRANSACTIONS SET TOTALPRICE = (SELECT SUM(TOTALSOLDPRICE) " +
                             "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
@@ -169,7 +170,7 @@ public class addTransaction {
 
                     System.out.println(sqlTotalPriceFormatted);
 
-                    statement.executeQuery(sqlTotalPriceFormatted);
+                    statement2.executeQuery(sqlTotalPriceFormatted);
                     System.out.println("Total price updated for transaction: " + nextTransactionId);
 
 
