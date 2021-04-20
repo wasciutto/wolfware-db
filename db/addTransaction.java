@@ -95,6 +95,7 @@ public class addTransaction {
 
                     String quit = null;
 
+                    Statement transactionItemStatement = connection.createStatement();
                     ResultSet transactionItemIDresult = null;
 
                     do {
@@ -108,7 +109,7 @@ public class addTransaction {
                                 //sql query for getting all the data from TRANSACTION ITEM ID
                                 sqlTransactionItemCount = "SELECT * FROM TRANSACTIONITEMS";
                                 try {
-                                    transactionItemIDresult = statement.executeQuery(sqlTransactionItemCount);
+                                    transactionItemIDresult = transactionItemStatement.executeQuery(sqlTransactionItemCount);
                                     //going to the last row and checking its row number to generate next transaction item number.
                                     transactionItemIDresult.last();
                                     rowsItem = transactionIDresult.getRow();
