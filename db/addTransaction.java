@@ -34,6 +34,8 @@ public class addTransaction {
             String sqlTransactionItemFormatted = null;
 
             int nextTransactionId = 0;
+            String sqlTransactionCount = null;
+            int rows = 0;
 
             ResultSet transactionIDresult = null;
             ResultSet transactionItemIDresult = null;
@@ -46,9 +48,9 @@ public class addTransaction {
                 //Generate next TRANSACTION ID
                 try {
                     //sql query for getting all the data from TRANSACTION ID
-                    sqlcount = "SELECT * FROM TRANSACTIONS";
+                    sqlTransactionCount = "SELECT * FROM TRANSACTIONS";
                     try {
-                        transactionIDresult = statement.executeQuery(sqlcount);
+                        transactionIDresult = statement.executeQuery(sqlTransactionCount);
                         //going to the last row and checking its row number to generate next  transaction number.
                         transactionIDresult.last();
                         rows = transactionIDresult.getRow();
