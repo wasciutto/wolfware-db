@@ -20,7 +20,7 @@ public class isItemOnSale {
             String DISCOUNTID = null;
 
             String sql = "SELECT A.DISCOUNTID FROM HASDISCOUNT A, DISCOUNT B  WHERE A.DISCOUNTID = B.DISCOUNTID " +
-                    "AND PRODUCTID = '%s' AND B.STARTDATE < '%s' AND B.ENDDATE > '%s';
+                    "AND PRODUCTID = '%s' AND B.STARTDATE < '%s' AND B.ENDDATE > '%s';";
 
             String sqlFormatted = null;
 
