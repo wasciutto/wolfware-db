@@ -122,13 +122,9 @@ public class addTransaction {
                             System.out.print("Enter Quantity Sold: ");
                             quantitySold = sc.nextLine();
 
-                            System.out.print("Enter Total Price: ");
-                            totalSoldPrice = sc.nextLine();
 
                             System.out.println("Press any key to enter new item or 'quit' to finish");
                             quit = sc.nextLine();
-
-                            sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
                             sqlDiscountFormatted = String.format(sqlDiscount, purchaseDate, purchaseDate, productID, productID);
 
@@ -136,13 +132,17 @@ public class addTransaction {
                             try {
                                 connection.setAutoCommit(false);
 
-                                statement.executeQuery(sqlTransactionItemFormatted);
-
                                 discountResult = statement.executeQuery(sqlDiscountFormatted);
 
                                 discountResult.next();
                                 DISCOUNTVALUE = discountResult.getDouble(1);
                                 System.out.println("" + DISCOUNTVALUE);
+
+                                totalSoldPrice = DISCOUNTVALUE * Integer.parseInt(quantitySold);
+
+                                sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), totalSoldPrice);
+
+                                statement.executeQuery(sqlTransactionItemFormatted);
 
                                 connection.commit();
 
@@ -161,6 +161,13 @@ public class addTransaction {
 
                     } while (!quit.equals("quit"));
 
+
+                    String sqlTotalPrice =  "UPDATE TRANSACTIONS SET TOTALPRICE = (SELECT SUM(TOTALSOLDPRICE) " +
+                            "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
+                    String sqlTotalPriceFormatted = String.format(sqlTotalPrice, nextTransactionId, nextTransactionId);
+
+                    statement.executeQuery(sqlTotalPriceFormatted);
+                    System.out.println("Total price updated for transaction: " + nextTransactionId);
 
 
                     return;
