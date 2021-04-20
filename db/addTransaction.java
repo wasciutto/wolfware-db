@@ -71,8 +71,6 @@ public class addTransaction {
                 // Gather Transaction details
                 try {
                     System.out.print("TRANSACTION details");
-                    System.out.print("Enter Transaction ID: ");
-                    transactionId = sc.nextLine();
 
                     System.out.print("Enter Customer ID: ");
                     customerID = sc.nextLine();
@@ -83,7 +81,7 @@ public class addTransaction {
                     System.out.print("Enter Purchase Date (YYYY-MM-DD): ");
                     purchaseDate = sc.nextLine();
 
-                    sqlFormatted = String.format(sql, transactionId, customerID, cashierID, purchaseDate);
+                    sqlFormatted = String.format(sql, nextTransactionId, customerID, cashierID, purchaseDate);
 
                 } catch (Throwable oops) {
                     System.out.print(oops);
