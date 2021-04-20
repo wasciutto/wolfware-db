@@ -167,7 +167,7 @@ public class addTransaction {
                             "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
                     String sqlTotalPriceFormatted = String.format(sqlTotalPrice, nextTransactionId, nextTransactionId);
 
-                    System.out.println(sqlTotalPrice);
+                    System.out.println(sqlTotalPriceFormatted);
 
                     statement.executeQuery(sqlTotalPriceFormatted);
                     System.out.println("Total price updated for transaction: " + nextTransactionId);
