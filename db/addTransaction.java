@@ -84,7 +84,7 @@ public class addTransaction {
                             System.out.println("Press any key to enter new item or 'quit' to finish");
                             quit = sc.nextLine();
 
-                            sqlTransactionItemFormatted = String.format(sql, transactionId, transactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
+                            sqlTransactionItemFormatted = String.format(sqlTransactionItem, transactionId, transactionItemId, productID, Integer.parseInt(quantitySold), Double.parseDouble(totalSoldPrice));
 
                             try {
                                 connection.setAutoCommit(false);
