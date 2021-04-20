@@ -33,12 +33,12 @@ public class isItemOnSale {
 
                 try {
                     System.out.print("Enter Product ID: ");
-                    customerID = sc.nextLine();
+                    productID = sc.nextLine();
 
                     System.out.print("Enter Date to Check (YYYY-MM-DD): ");
                     date = sc.nextLine();
 
-                    sqlFormatted = String.format(sql, customerID, date);
+                    sqlFormatted = String.format(sql, productID, date, date);
 
                 } catch (Throwable oops) {
                     System.out.print(oops);
