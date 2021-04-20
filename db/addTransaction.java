@@ -33,11 +33,40 @@ public class addTransaction {
             String sqlTransactionItem = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%d','%f');";
             String sqlTransactionItemFormatted = null;
 
+            int nextTransactionId = 0;
+
+            ResultSet transactionIDresult = null;
+            ResultSet transactionItemIDresult = null;
+
             Scanner sc = new Scanner(System.in);
             try {
                 connection = DriverManager.getConnection(jdbcURL, user, password);
                 statement = connection.createStatement();
 
+                //Generate next TRANSACTION ID
+                try {
+                    //sql query for getting all the data from TRANSACTION ID
+                    sqlcount = "SELECT * FROM TRANSACTIONS";
+                    try {
+                        transactionIDresult = statement.executeQuery(sqlcount);
+                        //going to the last row and checking its row number to generate next  transaction number.
+                        transactionIDresult.last();
+                        rows = transactionIDresult.getRow();
+                    } catch (Exception e) {
+                        System.out.println("\n Transaction data could not be loaded. Please try again.");
+                    }
+
+                    nextTransactionId = rows + 1;
+                    System.out.println(nextTransactionId);
+
+
+                } catch (Exception e) {
+                    System.out.println("Transaction Number could not be generated. Please try again. ");
+                } finally {
+                    close(transactionIDresult);
+                }
+
+                // Gather Transaction details
                 try {
                     System.out.print("TRANSACTION details");
                     System.out.print("Enter Transaction ID: ");
@@ -60,6 +89,7 @@ public class addTransaction {
                 try{
                     connection.setAutoCommit(false);
 
+                    // Execute insertion into transaction
                     statement.executeQuery(sqlFormatted);
 
                     connection.commit();
