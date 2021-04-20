@@ -94,9 +94,10 @@ public class addTransaction {
                     System.out.println("Added Transaction");
 
                     String quit = null;
-                    do {
-                        ResultSet transactionItemIDresult = null;
 
+                    ResultSet transactionItemIDresult = null;
+
+                    do {
                         int nextTransactionItemId = 0;
                         String sqlTransactionItemCount = null;
                         int rowsItem = 0;
