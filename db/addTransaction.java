@@ -24,7 +24,7 @@ public class addTransaction {
             String transactionItemId = null;
             String productID = null;
             String quantitySold = null;
-            String totalSoldPrice = null;
+            Double totalSoldPrice = null;
 
             // Add a new transaction - set total price to 0 for now until transaction items are added with the
             // update transaction API
@@ -138,7 +138,7 @@ public class addTransaction {
                                 DISCOUNTVALUE = discountResult.getDouble(1);
                                 System.out.println("" + DISCOUNTVALUE);
 
-                                Double totalSoldPrice = DISCOUNTVALUE * Integer.parseInt(quantitySold);
+                                totalSoldPrice = DISCOUNTVALUE * Integer.parseInt(quantitySold);
 
                                 sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), totalSoldPrice);
 
