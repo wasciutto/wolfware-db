@@ -89,7 +89,7 @@ public class addTransaction {
                             try {
                                 connection.setAutoCommit(false);
 
-                                statement.executeQuery(sqlFormatted);
+                                statement.executeQuery(sqlTransactionItemFormatted);
 
                                 connection.commit();
                             } catch (Exception e) {
