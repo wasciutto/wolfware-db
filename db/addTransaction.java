@@ -98,35 +98,34 @@ public class addTransaction {
                     Statement transactionItemStatement = connection.createStatement();
                     ResultSet transactionItemIDresult = null;
 
-                    do {
-                        transactionItemIDresult = null;
-                        int nextTransactionItemId = 0;
-                        String sqlTransactionItemCount = null;
-                        int rowsItem = 0;
+                    int nextTransactionItemId = 0;
+                    String sqlTransactionItemCount = null;
+                    int rowsItem = 0;
 
+                    //Generate next TRANSACTION ITEM ID
+                    try {
+                        //sql query for getting all the data from TRANSACTION ITEM ID
+                        sqlTransactionItemCount = "SELECT * FROM TRANSACTIONITEMS";
                         try {
-                            //Generate next TRANSACTION ITEM ID
-                            try {
-                                //sql query for getting all the data from TRANSACTION ITEM ID
-                                sqlTransactionItemCount = "SELECT * FROM TRANSACTIONITEMS";
-                                try {
-                                    transactionItemIDresult = transactionItemStatement.executeQuery(sqlTransactionItemCount);
-                                    //going to the last row and checking its row number to generate next transaction item number.
-                                    transactionItemIDresult.last();
-                                    rowsItem = transactionIDresult.getRow();
-                                } catch (Exception e) {
-                                    System.out.println(e);
-                                }
+                            transactionItemIDresult = transactionItemStatement.executeQuery(sqlTransactionItemCount);
+                            //going to the last row and checking its row number to generate next transaction item number.
+                            transactionItemIDresult.last();
+                            rowsItem = transactionIDresult.getRow();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
 
-                                nextTransactionItemId = rowsItem + 1;
-                                System.out.println("Transaction Item ID generated: " + nextTransactionItemId);
+                        nextTransactionItemId = rowsItem + 1;
+                        System.out.println("Transaction Item ID generated: " + nextTransactionItemId);
 
-                            } catch (Exception e) {
-                                System.out.println("Transaction Number could not be generated. Please try again. ");
-                            } finally {
-                                close(transactionIDresult);
-                            }
+                    } catch (Exception e) {
+                        System.out.println("Transaction Number could not be generated. Please try again. ");
+                    } finally {
+                        close(transactionIDresult);
+                    }
 
+                    do {
+                        try {
                             System.out.print("Enter Product ID: ");
                             productID = sc.nextLine();
 
@@ -147,14 +146,14 @@ public class addTransaction {
                                 statement.executeQuery(sqlTransactionItemFormatted);
 
                                 connection.commit();
+
+                                nextTransactionItemId++;
                             } catch (Exception e) {
                                 System.out.println("Failed to Add Transaction Item");
                                 connection.rollback();
                                 System.out.println(e);
                                 return;
                             }
-
-
                         } catch (Throwable oops) {
                             System.out.print(oops);
                         }
