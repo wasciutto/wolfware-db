@@ -16,13 +16,20 @@ public class addTransaction {
             Statement statement = null;
 
             String transactionId = null;
+            String productID = null;
+            String quantitySold = null;
+            String totalPrice = null;
+            String storeID = null;
             String customerID = null;
             String cashierID = null;
             String purchaseDate = null;
+            String totalPrice = null;
 
-            String sql =  "INSERT INTO TRANSACTIONS VALUES('%s','%s','%s', '%s', 0);";
+            String sql2 = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%s','%s');";
+            String sql3 = "UPDATE TRANSACTIONS SET TOTALPRICE = (SELECT SUM(TOTALSOLDPRICE) " +
+                    "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
 
-            String sqlFormatted = null;
+            String sql1Formatted = null;
 
             ResultSet result = null;
 
@@ -35,6 +42,18 @@ public class addTransaction {
                     System.out.print("Enter Transaction ID: ");
                     transactionId = sc.nextLine();
 
+                    System.out.print("Enter Product ID: ");
+                    productID = sc.nextLine();
+
+                    System.out.print("Enter Quantity Sold: ");
+                    quantitySold = sc.nextLine();
+
+                    System.out.print("Enter Total Price: ");
+                    totalPrice = sc.nextLine();
+
+                    System.out.print("Enter Store ID: ");
+                    storeID = sc.nextLine();
+
                     System.out.print("Enter Customer ID: ");
                     customerID = sc.nextLine();
 
@@ -44,8 +63,10 @@ public class addTransaction {
                     System.out.print("Enter Purchase Date (YYYY-MM-DD): ");
                     purchaseDate = sc.nextLine();
 
+                    System.out.println("Enter Total Price: ");
+                    totalPrice = sc.nextLine();
 
-                    sqlFormatted = String.format(sql, transactionId, customerID, cashierID, purchaseDate);
+                    sql1Formatted = String.format(sql, transactionId, customerID, date);
 
                 } catch (Throwable oops) {
                     System.out.print(oops);
@@ -53,16 +74,22 @@ public class addTransaction {
                 try{
                     connection.setAutoCommit(false);
 
-                    statement.executeQuery(sqlFormatted);
+                    result = statement.executeQuery(sqlFormatted);
+
+                    while (result.next()) {
+                        DISCOUNTID = result.getString("DISCOUNTID");
+                    }
 
                     connection.commit();
-
-                    System.out.println("Added Transaction");
+                    if(DISCOUNTID != null) {
+                        System.out.println("true");
+                    } else {
+                        System.out.println("false");
+                    }
 
                     return;
                 }
                 catch (Exception e) {
-                    System.out.println("Failed to Add Transaction");
                     connection.rollback();
                     System.out.println(e);
                     return;
