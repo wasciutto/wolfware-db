@@ -20,6 +20,8 @@ public class addTransaction {
             String cashierID = null;
             String purchaseDate = null;
 
+            // Add a new transaction - set total price to 0 for now until transaction items are added with the
+            // update transaction API
             String sql =  "INSERT INTO TRANSACTIONS VALUES('%s','%s','%s', '%s', 0);";
 
             String sqlFormatted = null;

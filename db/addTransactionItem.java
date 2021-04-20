@@ -21,7 +21,9 @@ public class addTransactionItem {
             String quantitySold = null;
             String totalSoldPrice = null;
 
-            String sql = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%s','%s');";
+            // Insert a new transaction item into the database. Its totalSoldPrice is used in TRANSACTIONS to calculate
+            // the total value of a TRANSACTION with many TRANSACTIONITEMs.
+            String sql = "INSERT INTO TRANSACTIONITEMS VALUES ('%s','%s','%s','%d','%f');";
 
             String sqlFormatted = null;
 

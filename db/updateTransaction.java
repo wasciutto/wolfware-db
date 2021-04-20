@@ -17,6 +17,7 @@ public class updateTransaction {
 
             String transactionId = null;
 
+            // Update the total price in TRANSACTIONS to reflect the total sum of totalSoldPrice for the transaction
             String sql =  "UPDATE TRANSACTIONS SET TOTALPRICE = (SELECT SUM(TOTALSOLDPRICE) " +
                     "FROM TRANSACTIONITEMS WHERE TRANSACTIONID = '%s')  WHERE TRANSACTIONID = '%s';";
 
