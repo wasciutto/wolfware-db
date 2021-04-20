@@ -142,6 +142,7 @@ public class addTransaction {
 
                                 while (discountResult.next()) {
                                     DISCOUNTVALUE = discountResult.getDouble(1);
+                                    System.out.println("" + DISCOUNTVALUE);
                                 }
 
                                 connection.commit();
