@@ -138,7 +138,7 @@ public class addTransaction {
                                 DISCOUNTVALUE = discountResult.getDouble(1);
                                 System.out.println("" + DISCOUNTVALUE);
 
-                                totalSoldPrice = DISCOUNTVALUE * Integer.parseInt(quantitySold);
+                                Double totalSoldPrice = DISCOUNTVALUE * Integer.parseInt(quantitySold);
 
                                 sqlTransactionItemFormatted = String.format(sqlTransactionItem, nextTransactionId, "TRNT" + nextTransactionItemId, productID, Integer.parseInt(quantitySold), totalSoldPrice);
 
