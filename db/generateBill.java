@@ -28,41 +28,41 @@ public class generateBill {
 
             String sqlInsertSupplierBillFormatted = null;
             String sqlManagesSupplierFormatted = null;
-             int nextId = 0;
+            int nextId = 0;
             int rows = 0;
             String sqlcount = null;
             Scanner sc = new Scanner(System.in);
             try {
-            // Get a connection instance from the first driver in the
-            // DriverManager list that recognizes the URL jdbcURL
+                // Get a connection instance from the first driver in the
+                // DriverManager list that recognizes the URL jdbcURL
                 connection = DriverManager.getConnection(jdbcURL, user, password);
                 statement = connection.createStatement();
-                
-                
+
+
                 //generating next bill Id number
-  							try{
-  									//sql query for getting all the data from Supplied Products table
-  									sqlcount = "SELECT * FROM SUPPLIERBILLS";
-  									try{
-  									//executing the query
-  									resultID = statement.executeQuery(sqlcount);
-  									//going to the last row and checking its row number to generate next  transaction number. 
-  									resultID.last();
-  									rows = resultID.getRow();
-  									}catch(Exception e){
-  											System.out.println("\n Transaction data could not be loaded. Please try again.");
-  									}
-  									
-                    nextId = rows + 1;
-                    
-  
-  							}catch(Exception e){
-  									System.out.println("Transaction Number could not be generated. Please try again. ");
-  							}
-                
-                  
                 try {
-                 // Get User Input
+                    //sql query for getting all the data from Supplied Products table
+                    sqlcount = "SELECT * FROM SUPPLIERBILLS";
+                    try {
+                        //executing the query
+                        resultID = statement.executeQuery(sqlcount);
+                        //going to the last row and checking its row number to generate next  transaction number.
+                        resultID.last();
+                        rows = resultID.getRow();
+                    } catch (Exception e) {
+                        System.out.println("\n Transaction data could not be loaded. Please try again.");
+                    }
+
+                    nextId = rows + 1;
+
+
+                } catch (Exception e) {
+                    System.out.println("Transaction Number could not be generated. Please try again. ");
+                }
+
+
+                try {
+                    // Get User Input
                     billID = String.valueOf(nextId);
 
                     System.out.print("Enter suppliedProductTransactionID: ");
@@ -88,7 +88,7 @@ public class generateBill {
                     System.out.print(oops);
                     System.out.print("Incorrect format for billID, suppliedProductTransactionID, staffID, or supplierID");
                 }
-                try{
+                try {
                     connection.setAutoCommit(false);
 
                     statement.executeQuery(sqlInsertSupplierBillFormatted);
@@ -96,48 +96,43 @@ public class generateBill {
 
                     connection.commit();
                     System.out.println("Bill generated");
-                    
-                    
+
+
                     System.out.println("View updated results? Yes/No?");
                     String decision = sc.nextLine();
-                    
+
                     if (decision.equals("Yes")) {
-                    try{
-          					//retrieving the result 
-          					String sqlresult="SELECT BILLID, BILLAMOUNT,BILLPAID,BATCHID FROM SUPPLIERBILLS";
-          					//running the statement to get result. 
-          					result= statement.executeQuery(sqlresult);
-          					
-          					//parsing through the ResultSet one by one and displaying all the values. 
-          					System.out.println("*****************************************************************");
-  		  
-                    System.out.println("| BILLID\t|\tBILLAMOUNT\t|\tBILLPAID\t |");
-  		              System.out.println("****************************************************************");
-          					
-                    while(result.next())
-          					{
-          						
-          						String BILLID= result.getString("BILLID");
-          						String BILLAMOUNT= result.getString("BILLAMOUNT");
-          						String BILLPAID = result.getString("BILLPAID");
-                      //String BATCHID  = result.getString("BATCHID ");
-          						System.out.println("| "+BILLID + "\t\t|\t" + BILLAMOUNT+ "\t\t|\t" + BILLPAID+ "\t\t |");
-          					}
-                     System.out.println("*****************************************************************");
-          					}
-                    catch(Exception e)
-                    {
-          					System.out.println("error in printing the modified changes");}
+                        try {
+                            //retrieving the result
+                            String sqlresult = "SELECT BILLID, BILLAMOUNT,BILLPAID,BATCHID FROM SUPPLIERBILLS";
+                            //running the statement to get result.
+                            result = statement.executeQuery(sqlresult);
+
+                            //parsing through the ResultSet one by one and displaying all the values.
+                            System.out.println("*****************************************************************");
+
+                            System.out.println("| BILLID\t|\tBILLAMOUNT\t|\tBILLPAID\t |");
+                            System.out.println("****************************************************************");
+
+                            while (result.next()) {
+
+                                String BILLID = result.getString("BILLID");
+                                String BILLAMOUNT = result.getString("BILLAMOUNT");
+                                String BILLPAID = result.getString("BILLPAID");
+                                //String BATCHID  = result.getString("BATCHID ");
+                                System.out.println("| " + BILLID + "\t\t|\t" + BILLAMOUNT + "\t\t|\t" + BILLPAID + "\t\t |");
+                            }
+                            System.out.println("*****************************************************************");
+                        } catch (Exception e) {
+                            System.out.println("error in printing the modified changes");
+                        }
+                    } else {
+                        System.out.println("No results!");
                     }
-                    else{
-                      System.out.println("No results!");
-                      }
-                    
-                    
+
 
                     return;
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     connection.rollback();
                     System.out.println(e);
                     System.out.println("Bill failed to generate");
@@ -179,6 +174,6 @@ public class generateBill {
             }
         }
     }
-    
-    
+
+
 }
