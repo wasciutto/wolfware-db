@@ -98,7 +98,7 @@ public class addTransaction {
 
                     Statement transactionItemStatement = connection.createStatement();
 
-                    int nextTransactionItemId = "TRNT" + Random.nextInt(100000);
+                    int nextTransactionItemId = "TRNT" + Integer.toString(Random.nextInt(100000));
 
                     do {
                         try {
