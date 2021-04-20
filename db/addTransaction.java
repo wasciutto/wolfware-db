@@ -105,7 +105,7 @@ public class addTransaction {
 
                     //setup the discount SQL
                     String sqlDiscount = "SELECT MARKETPRICE-(SELECT A.VALUE FROM DISCOUNT A, HASDISCOUNT B WHERE A.DISCOUNTID = " +
-                            "B.DISCOUNTID AND A.STARTDATE < '%s' AND A.ENDDATE > '%s' AND B.PRODUCTID = " +
+                            "B.DISCOUNTID AND A.STARTDATE <= '%s' AND A.ENDDATE >= '%s' AND B.PRODUCTID = " +
                             "'%s') FROM PRODUCTINVENTORY WHERE PRODUCTID = '%s';";
                     String sqlDiscountFormatted = null;
 
